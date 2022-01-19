@@ -15,7 +15,7 @@
       >
         <template v-slot:activator="{ on, attrs }">
           <v-text-field
-            v-model="date"
+            v-model="computedDateFormatted"
             label="Выберите день"
             prepend-icon="mdi-calendar"
             name="date"
@@ -27,7 +27,10 @@
         <v-date-picker
           v-model="date"
           name="date"
+          :max="maxDate"
           @input="menu2 = false"
+          locale="ru-Ru"
+          first-day-of-week="1"
         ></v-date-picker>
       </v-menu>
        <v-radio-group v-model="radioAdmin">
@@ -53,23 +56,34 @@
 </template>
 
 <script>
+import moment from 'moment'
 export default {
   asyncData({store}) {
     const admins = store.getters['admins/admins']
+
     return {admins}
   },
   data() {
     return {
       admins: [],
       date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      dateFormatted: this.formatDate((new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)),
+      maxDate: '',
       radioAdmin: '',
       valid: false,   
       menu2: false,   
       invalid: 0
     }
   },
-  actions: {
-
+  computed: {
+    computedDateFormatted () {
+      return this.formatDate(this.date)
+    }
+  },
+  watch: {
+    date (val) {
+      this.dateFormatted = this.formatDate(this.date)
+    },
   },
   methods: {
     onSubmit() {
@@ -79,10 +93,18 @@ export default {
         date: this.date
       }
       console.log(formData)
-    }
+    },
+     formatDate (date) {
+        if (!date) return null
+
+        const [year, month, day] = date.split('-')
+        return `${month}/${day}/${year}`
+      },
   },
+ 
   mounted() {
     this.radioAdmin = this.admins[0].id
+    this.maxDate = this.date
   }
 }
 </script>

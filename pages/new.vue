@@ -60,8 +60,9 @@ import moment from 'moment'
 export default {
   asyncData({store}) {
     const admins = store.getters['admins/admins']
-
-    return {admins}
+    const days = store.getters['days/days']
+   /*  console.log(days) */
+    return {admins, days}
   },
   data() {
     return {
@@ -87,12 +88,13 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log(this.admins[0])
       const formData = {
-        admin: this.radioAdmin,
-        date: this.date
+        id: this.date,
+        date: this.date,
+        admin: this.radioAdmin,       
       }
-      console.log(formData)
+      this.$store.commit('days/addDay', formData)
+      console.log(this.$store.getters['days/days'])
     },
      formatDate (date) {
         if (!date) return null

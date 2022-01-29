@@ -1,16 +1,5 @@
 export const state = () => ({
-  days: [
-    {
-      id: '2022-01-17',
-      date: '2022-01-17',
-      admin: '1'
-    },
-    {
-      id: '2022-01-18',
-      date: '2022-01-18',
-      admin: '2'
-    }
-  ]
+ 
 })
 
 
@@ -20,6 +9,17 @@ export const mutations = {
   },
   addDay(state, payload) {
     state.days.push(payload)
+  }
+}
+
+export const actions = {
+  async fetch({commit}) {
+    try {
+      return await this.$axios.$get('/api/days')     
+    } catch (error) {
+      throw error
+    }
+    
   }
 }
 

@@ -82,10 +82,14 @@ import AppOrders from '@/components/AppOrders.vue'
 import AppForm from '~/components/AppForm.vue'
 export default {
   components: { AppOrders, AppForm },
-  asyncData({store}) {
+  async asyncData({store}) {
     const orders = store.getters['orders/orders']
     const masters = store.getters['orders/masters']
-    return {orders, masters}
+   
+
+    const days = await store.dispatch('days/fetch')
+    console.log(days)
+    return {days, orders, masters}
   },
   data() {
     return {

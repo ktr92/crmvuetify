@@ -1,5 +1,5 @@
 export const state = () => ({
- 
+  days: []
 })
 
 
@@ -20,7 +20,16 @@ export const actions = {
       throw error
     }
     
-  }
+  },
+  async fetchDay({commit}, day) {
+    try {
+      return await this.$axios.$get(`/api/days/${day}`)     
+    } catch (error) {
+      throw error
+    }
+    
+  },
+
 }
 
 export const getters = {

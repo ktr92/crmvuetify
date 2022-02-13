@@ -5,7 +5,9 @@ const router = Router()
 // /api/days
 // days show
 router.get('/', ctr.getAll)
-router.get('/:id', ctr.getOne)
+router.get('/one/:id', ctr.getOne)
+router.get('/admins', ctr.getAdmins)
+ 
 /* router.post('/', ctr.setAdmins) */
 
 module.exports = router

@@ -1,6 +1,7 @@
 <template>
-  <div>
-    <app-form :masters="masters"></app-form>
+  <div v-cloak>
+   
+    <app-form :master="masters"></app-form>
     <v-data-table
       :headers="headers"
       :items="days"
@@ -17,8 +18,8 @@
             <th rowspan="2">Телефон</th>
             <th rowspan="2">Имя</th>
             <th colspan="11" rowspan="1">Заказ</th>
-            <th rowspan="2">Скидка 1</th>
             <th rowspan="2">Сумма</th>
+            <th rowspan="2">Скидка 1</th>
             <th rowspan="2">Мастер</th>
             <th rowspan="2">Продажа</th>
             <th rowspan="2">Скидка 2</th>
@@ -72,8 +73,9 @@
            <td>{{ props.item.n500 }}</td>
            <td>{{ props.item.n550 }}</td>
            <td>{{ props.item.n600 }}</td>
+            <td>{{ props.item.summ }}</td> 
            <td>{{ props.item.percent1 }}</td> 
-           <td>{{ props.item.summ }}</td> 
+          
            <td>{{ props.item.master }}</td> 
            <td>{{ props.item.sale }}</td> 
            <td>{{ props.item.percent2 }}</td> 
@@ -87,6 +89,7 @@
       </template>
     </v-data-table>
   </div>
+  
 </template>
 
 
@@ -96,21 +99,27 @@ import AppForm from '~/components/AppForm.vue'
 export default {
   components: { AppOrders, AppForm },
   async asyncData({store, route}) {
-    const orders = store.getters['orders/orders']
-    const masters = store.getters['orders/masters']
-    const days = await store.dispatch('days/fetchDay', '24.06.2019')
-    /* store.commit['days/setDays', days] */
-   /*  console.log(days) */
-    return {days, orders, masters}
+    let ready = 0
+    const days = await store.dispatch('days/fetchDay', store.getters.day || '26.06.2019')
+    ready = 1
+   /*  if (store.getters['days/days'].length > 0) {
+      days = store.getters['days/days']
+    }
+    else {
+      days = await store.dispatch('days/fetch')
+      await store.dispatch('days/setdays', days)
+    } */
+
+    return {days, ready}
   },
-  data() {
+  data() { 
     return {
       orders: {},    
-      headers: []
+      headers: [],
     }
   },
   mounted() {
- 
+  
   }
  
  /*  computed: {
@@ -145,5 +154,6 @@ td, th {
     white-space: normal !important;
     max-width: 120px;
   }
+  [v-cloak] { display: none; }
 
 </style>

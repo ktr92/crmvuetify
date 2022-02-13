@@ -1,5 +1,6 @@
 <template>
   <v-app dark>
+     <notifications position="bottom right" />
     <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"
@@ -35,7 +36,13 @@
     </v-app-bar>
     <v-main>
       <v-container>
-        <Nuxt />
+        <div v-if="ready">
+          <Nuxt />
+        </div>
+        <div v-else>
+          <AppLoading />
+        </div>
+        
       </v-container>
     </v-main>
     <v-navigation-drawer
@@ -60,14 +67,22 @@
       app
     >
       <span>&copy; {{ new Date().getFullYear() }}</span>
+
+      
+
     </v-footer>
+
   </v-app>
 </template>
 
 <script>
+import AppLoading from '@/components/AppLoading.vue'
+
 export default {
+  components: {AppLoading},
   data () {
     return {
+      ready: false,
       clipped: false,
       drawer: false,
       fixed: false,
@@ -81,13 +96,28 @@ export default {
           icon: 'mdi-chart-bubble',
           title: 'Новый день',
           to: '/new'
-        }
+        },
+        {
+          icon: 'mdi-account-cog',
+          title: 'Админы',
+          to: '/admins'
+        },
+
       ],
       miniVariant: false,
       right: true,
       rightDrawer: false,
       title: ''
     }
+  },
+  mounted() {
+    this.ready = true
   }
 }
 </script>
+
+<style>
+  .notification-title {
+    font-size: 16px;  
+  }
+</style>

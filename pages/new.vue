@@ -37,9 +37,9 @@
          <label for="">Выберите админа:</label>
         <v-radio
           v-for="admin in admins"
-          :key="admin.id"
+          :key="admin._id"
           :label="admin.name"
-          :value="admin.id"
+          :value="admin.name"
           name="admin"
         ></v-radio>
       </v-radio-group>
@@ -56,17 +56,14 @@
 </template>
 
 <script>
-import moment from 'moment'
 export default {
-  asyncData({store}) {
-    const admins = store.getters['admins/admins']
-    const days = store.getters['days/days']
-   /*  console.log(days) */
-    return {admins, days}
+  async asyncData({store}) {
+    const admins = await store.dispatch('admins/fetchAdmins')
+    console.log(admins)
+    return {admins}
   },
   data() {
     return {
-      admins: [],
       date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
       dateFormatted: this.formatDate((new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)),
       maxDate: '',
@@ -89,24 +86,24 @@ export default {
   methods: {
     onSubmit() {
       const formData = {
-        id: this.date,
-        date: this.date,
+        id: this.dateFormatted,
+        date: this.dateFormatted,
         admin: this.radioAdmin,       
       }
-      this.$store.commit('days/addDay', formData)
-      console.log(this.$store.getters['days/days'])
+      console.log(formData)
+      /* this.$store.commit('days/addDay', formData) */
+      
     },
      formatDate (date) {
         if (!date) return null
-
         const [year, month, day] = date.split('-')
-        return `${month}/${day}/${year}`
+        return `${day}.${month}.${year}`
       },
   },
  
   mounted() {
-    this.radioAdmin = this.admins[0].id
-    this.maxDate = this.date
+   /*  this.radioAdmin = this.admins[0].id
+    this.maxDate = this.date */
   }
 }
 </script>

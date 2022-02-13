@@ -1,22 +1,15 @@
 <template>
   <div>
-     <v-form v-model="valid">
+     <v-form v-model="valid" @submit.prevent="onSubmit">
       <v-simple-table>
         <template v-slot:default>
          
           <tbody>
             <tr>
-              <td>
-                 <v-text-field
-                    v-model="name"
-                    :rules="nameRules"
-                    label="Имя"
-                    required
-                  ></v-text-field>
-              </td>
+              
               <td>
                 <v-text-field
-                  v-model="source"
+                  v-model="from"
                   label="Откуда"
                 ></v-text-field>
               </td>
@@ -28,133 +21,170 @@
                   required
                 ></v-text-field>
               </td>
+              <td>
+                 <v-text-field
+                    v-model="name"
+                    :rules="nameRules"
+                    label="Имя"
+                    required
+                  ></v-text-field>
+              </td>
               
               <td>
                 <v-text-field
-                  v-model="order100"
+                  v-model.number="n100"
                   label="100"
                   type="number" min="0"
                 ></v-text-field>
               </td>
               <td>
                 <v-text-field
-                  v-model="order150"
+                  v-model.number="n150"
                   label="150"
                   type="number" min="0"
                 ></v-text-field>
               </td>
               <td>
                 <v-text-field
-                  v-model="order200"
+                  v-model.number="n200"
                   label="200"
                   type="number" min="0"
                 ></v-text-field>
               </td>
               <td>
                 <v-text-field
-                  v-model="order250"
+                  v-model.number="n250"
                   label="250"
                   type="number" min="0"
                 ></v-text-field>
               </td>
               <td>
                 <v-text-field
-                  v-model="order300"
+                  v-model.number="n300"
                   label="300"
                   type="number" min="0"
                 ></v-text-field>
               </td>
               <td>
                 <v-text-field
-                  v-model="order350"
+                  v-model.number="n350"
                   label="350"
                   type="number" min="0"
                 ></v-text-field>
               </td>
               <td>
                 <v-text-field
-                  v-model="order400"
+                  v-model.number="n400"
                   label="400"
                   type="number" min="0"
                 ></v-text-field>
               </td>
               <td>
                 <v-text-field
-                  v-model="order450"
+                  v-model.number="n450"
                   label="450"
                   type="number" min="0"
                 ></v-text-field>
               </td>
               <td>
                 <v-text-field
-                  v-model="order500"
+                  v-model.number="n500"
                   label="500"
                   type="number" min="0"
                 ></v-text-field>
               </td>
               <td>
                 <v-text-field
-                  v-model="order550"
+                  v-model.number="n550"
                   label="550"
                   type="number" min="0"
                 ></v-text-field>
               </td>
               <td>
                 <v-text-field
-                  v-model="order600"
+                  v-model.number="n600"
                   label="600"
                   type="number" min="0"
                 ></v-text-field>
               </td>
               
+              
                <td>
                 <v-text-field
-                  v-model="ordersale"
+                  v-model.number="summ"
                   label="Сумма заказа"
+                  min="0"
                   disabled
                 ></v-text-field>
               </td>
               <td>
+                <v-text-field
+                  v-model.number="percent1"
+                  label="Скидка 1"
+                  min="0"
+                ></v-text-field>
+              </td>
+              <td>
                 <v-select
-                  :items="masters"
+                  :items="master"
                   label="Мастер"
-                  
                 ></v-select>
               </td>
               <td>
                 <v-text-field
-                  v-model="ordersale"
+                  v-model.number="sale"
+                  min="0"
                   label="Продажа"
+                  type="number"
                 ></v-text-field>
               </td>
               <td>
                 <v-text-field
-                  v-model="orderplus"
-                  label="Доп"
+                  v-model.number="percent2"
+                  min="0"
+                  label="Скидка 2"
                 ></v-text-field>
               </td>
               
               <td>
                 <v-text-field
-                  v-model="orderminus"
-                  label="Скидка"
-                ></v-text-field>
-              </td>
-             
-              <td>
-                <v-text-field
-                  v-model="total"
+                  v-model.number="total"
+                  min="0"
                   label="Итого"
                   disabled
                 ></v-text-field>
               </td>
-               <td>
+              <td>
                 <v-textarea
                 rows="1"
-                v-model="comment"
-                label="Комментарий"
+                v-model="commentOrder"
+                label="О заказе"
               ></v-textarea>
               </td>
+              <td>
+                <v-textarea
+                rows="1"
+                v-model="commentClient"
+                label="О клиенте"
+              ></v-textarea>
+              </td>
+             <td>
+                <v-select
+                  :items="blacklists"
+                  label="ЧС"
+                  v-model="blacklist"
+                ></v-select>
+              </td>
+               
+
+              <td>
+                <v-select
+                  :items="locations"
+                  label="Точка"
+                  v-model="location"
+                ></v-select>
+              </td>
+               
 
               
              
@@ -182,40 +212,78 @@
 
 <script>
 export default {
-  props: ['masters'],
+  props: ['master'],
   data() {
     return {
       valid: false,
       name: '',
-      source: '',
-      order100: '0',
-      order150: '0',
-      order200: '0',
-      order250: '0',
-      order300: '0',
-      order350: '0',
-      order400: '0',
-      order450: '0',
-      order500: '0',
-      order550: '0',
-      order600: '0',
-      ordertotal: '0',
-      ordersale: '0',
-      orderplus: '0',
-      orderminus: '0',
-      total: '0',
-      comment: '',
-      status: '',
       phone: '',
+      from: '',
+      n100: '',
+      n150: '',
+      n200: '',
+      n250: '',
+      n300: '',
+      n350: '',
+      n400: '',
+      n450: '',
+      n500: '',
+      n550: '',
+      n600: '',
+      percent1: '',
+      sale: '',
+      percent2: '',
+      commentOrder: '',
+      commentClient: '',
+      locations: ['Курская', 'Парк'],
+      blacklists: ['Да', 'Нет'],
+      location: 'Курская',
+      blacklist: 'Нет',
       nameRules: [
         v => !!v || 'Обязательное поле'       
       ],
+    }
+  },
+  computed: {
+    summ: function() {
+      return this.n100*100 + this.n150*150 + this.n200*200 + this.n250*250 + this.n300*300 + this.n350*350 + this.n400*400 + this.n450*450 + this.n500*500 + this.n550*550 + this.n600*600 
+    },
+    total: function() {
+      return this.summ + this.sale - this.percent1 - this.percent2
     }
   },
   methods: {
     clear() {
 
     },
+    onSubmit() {
+      const formData = {
+        name: this.name,
+        phone: this.phone,
+        from:  this.from,
+        n100:  this.n100 || 0,
+        n150:  this.n150 || 0,
+        n200:  this.n200 || 0,
+        n250:  this.n250 || 0,
+        n300:  this.n300 || 0,
+        n350:  this.n350 || 0,
+        n400: this.n400 || 0,
+        n450:  this.n450 || 0,
+        n500:  this.n500 || 0,
+        n550:  this.n550 || 0,
+        n600:  this.n600 || 0,
+        percent1:  this.percent1 || 0,
+        summ:  this.summ || 0,
+        sale:  this.sale || 0,
+        percent2:  this.percent2 || 0,
+        total: this.total || 0,
+        commentOrder:  this.commentOrder,
+        commentClient:  this.commentClient,
+        location: this.location,
+        blacklist:  this.blacklist,
+      }
+      
+    }
 
   }
  
@@ -226,9 +294,9 @@ export default {
   form .v-data-table > .v-data-table__wrapper > table > tbody > tr > td {
     padding: 0 5px;
   }
- 
+/*  
   form .v-data-table > .v-data-table__wrapper > table > tbody > tr > td input[type="number"] {
     max-width: 58px;
-  }
+  } */
 </style>
 

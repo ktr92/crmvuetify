@@ -3,7 +3,9 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const keys = require('./keys')
 const daysRoutes = require('./routes/days.routes')
+const adminsRoutes = require('./routes/admins.routes')
 const app = express()
+
 
 mongoose.connect(keys.MONGO_URI, {})
   .then(() => console.log('MongoDB connected'))
@@ -15,5 +17,7 @@ mongoose.connect(keys.MONGO_URI, {})
 app.use(bodyParser.json())
 
 app.use('/api/days', daysRoutes)
+app.use('/api/admins', adminsRoutes)
+
 
 module.exports = app

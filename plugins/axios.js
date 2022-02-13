@@ -1,5 +1,10 @@
+
+
 export default function ({ $axios, redirect, store }) {
 
+  $axios.onResponse(response => {
+    
+  })
 
   $axios.onError(error => {
     if (error.response) {
@@ -11,6 +16,9 @@ export default function ({ $axios, redirect, store }) {
       if (error.response.status === 500) {
         console.error('Server 500 error')
       }
+      
+     
+      
     }
   })
 }

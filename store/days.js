@@ -4,8 +4,8 @@ export const state = () => ({
 
 
 export const mutations = {
-  setDays(state, days) {
-    state.days = days
+  setDays(state, payload) {
+    state.days = payload
   },
   addDay(state, payload) {
     state.days.push(payload)
@@ -13,6 +13,9 @@ export const mutations = {
 }
 
 export const actions = {
+  setdays(context, day) {
+    context.commit('setDays', day)
+  },
   async fetch({commit}) {
     try {
       return await this.$axios.$get('/api/days')     
@@ -23,7 +26,15 @@ export const actions = {
   },
   async fetchDay({commit}, day) {
     try {
-      return await this.$axios.$get(`/api/days/${day}`)     
+      return await this.$axios.$get(`/api/days/one/${day}`)     
+    } catch (error) {
+      throw error
+    }
+     
+  },
+  async fetchAdmins({commit}) {
+    try {
+      return await this.$axios.$get('/api/days/admins')     
     } catch (error) {
       throw error
     }

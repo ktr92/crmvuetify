@@ -14,6 +14,7 @@ export default function ({ $axios, redirect, store }) {
       } */
 
       if (error.response.status === 500) {
+        console.log(error.response)
         console.error('Server 500 error')
       }
       

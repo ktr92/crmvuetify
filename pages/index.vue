@@ -100,7 +100,10 @@ export default {
   components: { AppOrders, AppForm },
   async asyncData({store, route}) {
     let ready = 0
-    const days = await store.dispatch('days/fetchDay', store.getters.day || '26.06.2019')
+    const daystmp = await store.dispatch('days/fetchDay', store.getters.day || '14.02.2022')
+    const masters = await store.dispatch('masters/fetchMasters')
+    await store.dispatch('days/setDays', daystmp)
+    const days = store.getters['days/days']
     ready = 1
    /*  if (store.getters['days/days'].length > 0) {
       days = store.getters['days/days']
@@ -110,7 +113,7 @@ export default {
       await store.dispatch('days/setdays', days)
     } */
 
-    return {days, ready}
+    return {days, masters, ready}
   },
   data() { 
     return {

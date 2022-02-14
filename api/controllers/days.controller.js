@@ -21,7 +21,16 @@ module.exports.getAdmins = async (req, res) => {
     const admins = await Days.distinct('admin')
     res.status(200).json(admins)
   } catch (error) {
-   
+    res.status(500).json(error)
+  }
+}
+module.exports.addRow = async (req, res) => {
+  try {
+    const row = new Days({...req.body})
+    await row.save()
+    res.status(201).json(row)
+  } catch (error) {
+    /* console.log(error) */
     res.status(500).json(error)
   }
 }

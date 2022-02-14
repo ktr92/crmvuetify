@@ -77,7 +77,7 @@ const daysSchema = new Schema({
     type: String
   },
   blacklist: {
-    type: Boolean
+    type: String
   },
   location: {
     type: String

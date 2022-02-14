@@ -13,33 +13,50 @@ export const mutations = {
 }
 
 export const actions = {
-  setdays(context, day) {
+  setDays(context, day) {
     context.commit('setDays', day)
   },
-  async fetch({commit}) {
+  addDay(context, day) {
+    context.commit('addDay', day)
+  },
+  async fetch({ commit }) {
     try {
-      return await this.$axios.$get('/api/days')     
+      return await this.$axios.$get('/api/days')
     } catch (error) {
       throw error
     }
+
+  },
+  async fetchDay({ commit }, day) {
+    try {
+      return await this.$axios.$get(`/api/days/one/${day}`)
+    } catch (error) {
+      throw error
+    }
+
+  },
+  async fetchAdmins({ commit }) {
+    try {
+      return await this.$axios.$get('/api/days/admins')
+    } catch (error) {
+      throw error
+    }
+
+  },
+  async addRow({ commit }, data) {
+    try {
     
-  },
-  async fetchDay({commit}, day) {
-    try {
-      return await this.$axios.$get(`/api/days/one/${day}`)     
+      const req = await this.$axios.$post('/api/days/addrow', data).then(res => {  
+        return req
+      }).catch(err => {
+        commit('setError', err.response, {root: true})
+        throw err
+      })
     } catch (error) {
       throw error
     }
-     
   },
-  async fetchAdmins({commit}) {
-    try {
-      return await this.$axios.$get('/api/days/admins')     
-    } catch (error) {
-      throw error
-    }
-    
-  },
+
 
 }
 

@@ -1,6 +1,9 @@
 <template>
   <div>
-     <v-form v-model="valid" @submit.prevent="onSubmit">
+     <v-form 
+      v-model="valid"
+      ref="form" 
+      @submit.prevent="onSubmit">
       <v-simple-table>
         <template v-slot:default>
          
@@ -19,6 +22,7 @@
                   label="Телефон"
                   :rules="nameRules"
                   required
+                  @change="clientInfo"
                 ></v-text-field>
               </td>
               <td>
@@ -128,6 +132,7 @@
                 <v-select
                   :items="master"
                   label="Мастер"
+                   item-text="name"
                 ></v-select>
               </td>
               <td>
@@ -173,6 +178,7 @@
                   :items="blacklists"
                   label="ЧС"
                   v-model="blacklist"
+                  item-value="first"
                 ></v-select>
               </td>
                
@@ -182,6 +188,7 @@
                   :items="locations"
                   label="Точка"
                   v-model="location"
+                  item-value="first"
                 ></v-select>
               </td>
                
@@ -242,51 +249,83 @@ export default {
       nameRules: [
         v => !!v || 'Обязательное поле'       
       ],
+     
     }
   },
   computed: {
-    summ: function() {
-      return this.n100*100 + this.n150*150 + this.n200*200 + this.n250*250 + this.n300*300 + this.n350*350 + this.n400*400 + this.n450*450 + this.n500*500 + this.n550*550 + this.n600*600 
+    summ: {
+      get() {
+        return this.n100*100 + this.n150*150 + this.n200*200 + this.n250*250 + this.n300*300 + this.n350*350 + this.n400*400 + this.n450*450 + this.n500*500 + this.n550*550 + this.n600*600 
+      },
+      set(val) {
+        this.value = val
+      }     
+      
     },
-    total: function() {
-      return this.summ + this.sale - this.percent1 - this.percent2
-    }
+     total:  {
+       get() {
+        return this.summ + this.sale - this.percent1 - this.percent2
+       },
+       set(val) {
+        this.value = val
+      }   
+     }
+        
   },
   methods: {
-    clear() {
+    clientInfo() {
 
     },
-    onSubmit() {
-      const formData = {
-        name: this.name,
-        phone: this.phone,
-        from:  this.from,
-        n100:  this.n100 || 0,
-        n150:  this.n150 || 0,
-        n200:  this.n200 || 0,
-        n250:  this.n250 || 0,
-        n300:  this.n300 || 0,
-        n350:  this.n350 || 0,
-        n400: this.n400 || 0,
-        n450:  this.n450 || 0,
-        n500:  this.n500 || 0,
-        n550:  this.n550 || 0,
-        n600:  this.n600 || 0,
-        percent1:  this.percent1 || 0,
-        summ:  this.summ || 0,
-        sale:  this.sale || 0,
-        percent2:  this.percent2 || 0,
-        total: this.total || 0,
-        commentOrder:  this.commentOrder,
-        commentClient:  this.commentClient,
-        location: this.location,
-        blacklist:  this.blacklist,
+    clear() {
+      this.$refs.form.reset()
+    },
+    async onSubmit() {
+      try {
+        const formData = {
+          date: "14.02.2022",
+          admin: "Николай",
+          name: this.name,
+          phone: this.phone,
+          from: this.from || '',
+          n100: this.n100 || 0,
+          n150: this.n150 || 0,
+          n200: this.n200 || 0,
+          n250: this.n250 || 0,
+          n300: this.n300 || 0,
+          n350: this.n350 || 0,
+          n400: this.n400 || 0,
+          n450: this.n450 || 0,
+          n500: this.n500 || 0,
+          n550: this.n550 || 0,
+          n600: this.n600 || 0,
+          percent1: this.percent1 || 0,
+          summ: this.summ || 0,
+          sale: this.sale || 0,
+          percent2: this.percent2 || 0,
+          total: this.total || 0,
+          commentOrder: this.commentOrder || '',
+          commentClient: this.commentClient || '',
+          location: this.location,
+          blacklist: this.blacklist,
+        }
+    
+      await this.$store.dispatch('days/addRow', formData)
+      this.$store.dispatch('days/addDay', formData)
+      this.$refs.form.reset()
+      this.$notify({         
+          title: 'Готово!',
+          type: 'success',
+          duration: 4000,         
+        })
+      } catch (error) {
+          this.$notify({         
+          title: 'Произошла ошибка.',
+          type: 'error',
+          duration: 4000,         
+        })
       }
-      
     }
-
   }
- 
 }
 </script>
 

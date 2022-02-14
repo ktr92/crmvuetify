@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const keys = require('./keys')
 const daysRoutes = require('./routes/days.routes')
 const adminsRoutes = require('./routes/admins.routes')
+const mastersRoutes = require('./routes/masters.routes')
 const app = express()
 
 
@@ -18,6 +19,6 @@ app.use(bodyParser.json())
 
 app.use('/api/days', daysRoutes)
 app.use('/api/admins', adminsRoutes)
-
+app.use('/api/masters', mastersRoutes)
 
 module.exports = app

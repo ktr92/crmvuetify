@@ -7,6 +7,7 @@ const router = Router()
 router.get('/', ctr.getAll)
 router.get('/one/:id', ctr.getOne)
 router.get('/admins', ctr.getAdmins)
+router.post('/addrow', ctr.addRow)
  
 /* router.post('/', ctr.setAdmins) */
 

@@ -94,6 +94,11 @@ export default {
         },
         {
           icon: 'mdi-chart-bubble',
+          title: 'Другой день',
+          to: '/days'
+        },
+        {
+          icon: 'mdi-chart-bubble',
           title: 'Новый день',
           to: '/new'
         },
@@ -101,6 +106,11 @@ export default {
           icon: 'mdi-account-cog',
           title: 'Админы',
           to: '/admins'
+        },
+        {
+          icon: 'mdi-account-hard-hat',
+          title: 'Мастера',
+          to: '/masters'
         },
 
       ],

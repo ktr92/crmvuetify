@@ -282,8 +282,8 @@ export default {
     async onSubmit() {
       try {
         const formData = {
-          date: "14.02.2022",
-          admin: "Николай",
+          date: this.$store.getters.day,
+          admin: this.$store.getters.admin,
           name: this.name,
           phone: this.phone,
           from: this.from || '',

@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import dateutils from '@/utils/date.utils'
 export default {
   async asyncData({store}) {
     const admins = await store.dispatch('admins/fetchAdmins')
@@ -64,8 +65,8 @@ export default {
   },
   data() {
     return {
-      date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-      dateFormatted: this.formatDate((new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)),
+      date: dateutils.getCurrentDate(),
+      dateFormatted: dateutils.formatDate(dateutils.getCurrentDate()),
       maxDate: '',
       radioAdmin: '',
       valid: false,   
@@ -75,12 +76,12 @@ export default {
   },
   computed: {
     computedDateFormatted () {
-      return this.formatDate(this.date)
+      return dateutils.formatDate(this.date)
     }
   },
   watch: {
     date (val) {
-      this.dateFormatted = this.formatDate(this.date)
+      this.dateFormatted = dateutils.formatDate(this.date)
     },
   },
   methods: {
@@ -90,15 +91,10 @@ export default {
         date: this.dateFormatted,
         admin: this.radioAdmin,       
       }
-      console.log(formData)
+      /* console.log(formData) */
       /* this.$store.commit('days/addDay', formData) */
       
-    },
-     formatDate (date) {
-        if (!date) return null
-        const [year, month, day] = date.split('-')
-        return `${day}.${month}.${year}`
-      },
+    }
   },
  
   mounted() {

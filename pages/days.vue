@@ -94,7 +94,7 @@ export default {
   components: { AppTable },
   async asyncData({store}) {
     let ready = 0
-    const days = await store.dispatch('days/fetchDay', store.getters.day || '25.06.2019')
+    const days = await store.dispatch('days/fetchDay', '25.06.2019')
     ready = 1
     return {days, ready}
   }

@@ -21,7 +21,7 @@ export const mutations = {
 
 export const actions = {
   setadmin(context, admin) {
-    context.commit('setadmin', admin)
+    context.commit('setAdmin', admin)
   },
   setday(context, day) {
     context.commit('setDay', day)

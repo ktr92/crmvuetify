@@ -98,11 +98,6 @@ export default {
           to: '/days'
         },
         {
-          icon: 'mdi-chart-bubble',
-          title: 'Новый день',
-          to: '/new'
-        },
-        {
           icon: 'mdi-account-cog',
           title: 'Админы',
           to: '/admins'

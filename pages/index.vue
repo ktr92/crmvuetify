@@ -1,7 +1,10 @@
 <template>
   <div v-cloak>
-   
-    <app-form :master="masters"></app-form>
+    <div v-if="!init">
+       <app-dayinit :admins="admins" :day="today"></app-dayinit>
+    </div>
+    <div v-else>
+      <app-form :master="masters"></app-form>
     <v-data-table
       :headers="headers"
       :items="days"
@@ -88,6 +91,9 @@
         </tr>
       </template>
     </v-data-table>
+    </div>
+   
+    
   </div>
   
 </template>
@@ -95,14 +101,25 @@
 
 <script>
 import AppOrders from '@/components/AppOrders.vue'
-import AppForm from '~/components/AppForm.vue'
+import AppForm from '@/components/AppForm.vue'
+import dateutils from '@/utils/date.utils'
+import AppDayinit from '@/components/AppDayinit.vue'
+
 export default {
-  components: { AppOrders, AppForm },
+  components: { AppOrders, AppForm, AppDayinit },
   async asyncData({store, route}) {
     let ready = 0
-    const daystmp = await store.dispatch('days/fetchDay', store.getters.day || '14.02.2022')
+    // определяем, какое сегодня число
+    const today = dateutils.formatDate(dateutils.getCurrentDate())
+    // получаем все заказы на сегодня
+    const daystmp = await store.dispatch('days/fetchDay', store.getters.day || today)
+    // получаем всех мастеров
     const masters = await store.dispatch('masters/fetchMasters')
+    // полчаем всех админов
+    const admins = await store.dispatch('admins/fetchAdmins')
+    // сохраняем все полученные заказы во vuex 
     await store.dispatch('days/setDays', daystmp)
+    // получаем все заказы из vuex
     const days = store.getters['days/days']
     ready = 1
    /*  if (store.getters['days/days'].length > 0) {
@@ -113,7 +130,7 @@ export default {
       await store.dispatch('days/setdays', days)
     } */
 
-    return {days, masters, ready}
+    return {days, masters, ready, today, admins}
   },
   data() { 
     return {
@@ -121,18 +138,12 @@ export default {
       headers: [],
     }
   },
-  mounted() {
-  
+  computed: {
+    init: function() {
+      return this.$store.getters.admin
+    }
   }
  
- /*  computed: {
-    orderscount: function() {
-      return this.orders[0].cart.length
-    },
-    orderlabels: function() {
-      return this.orders[0].cart.map(item => item.label)
-    }
-  } */
 }
 </script>
 

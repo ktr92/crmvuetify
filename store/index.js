@@ -17,6 +17,7 @@ export const mutations = {
   clearError(state) {
     state.error = null
   }
+
 }
 
 export const actions = {
@@ -28,7 +29,23 @@ export const actions = {
   },
   seterror(context, error) {
     context.commit('setError', error)
-  }
+  },
+  async checkday(context, day) {
+    /* context.commit('setDay', day) */
+    try {
+      return await this.$axios.$post('/api/days/check', day)
+    } catch (error) {
+      throw error
+    }
+  },
+  async setcurrent(context, data) {
+    /* context.commit('setDay', day) */
+    try {
+      return await this.$axios.$post('/api/days/current', data)
+    } catch (error) {
+      throw error
+    }
+  },
 }
 
 export const getters = {

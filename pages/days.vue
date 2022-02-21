@@ -32,7 +32,6 @@
               {{ label }}
             </th>
           </tr> -->
-
           <tr>
             <th>100</th>
             <th>150</th>
@@ -71,9 +70,8 @@
            <td>{{ props.item.n500 }}</td>
            <td>{{ props.item.n550 }}</td>
            <td>{{ props.item.n600 }}</td>
-            <td>{{ props.item.summ }}</td> 
+           <td>{{ props.item.summ }}</td> 
            <td>{{ props.item.percent1 }}</td> 
-          
            <td>{{ props.item.master }}</td> 
            <td>{{ props.item.sale }}</td> 
            <td>{{ props.item.percent2 }}</td> 
@@ -82,7 +80,6 @@
            <td class="td--comment">{{ props.item.commentClient }}</td> 
            <td>{{ props.item.blacklist }}</td> 
            <td>{{ props.item.location }}</td> 
-        
         </tr>
       </template>
     </v-data-table>

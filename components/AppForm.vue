@@ -19,6 +19,8 @@
               <td>
                 <v-text-field
                   v-model="phone"
+                  v-mask="'8##########'"
+               
                   label="Телефон"
                   :rules="nameRules"
                   required
@@ -213,15 +215,21 @@
         Очистить 
       </v-btn>
      </v-form>
+     <app-orders :orders="info" :show="checkinfo" :isfound="1"></app-orders>
      <br>
   </div>
 </template>
 
 <script>
+import AppOrders from '@/components/AppOrders'
+
 export default {
+  components: {AppOrders},
   props: ['master'],
   data() {
     return {
+      info: [],
+      headers: [],
       valid: false,
       name: '',
       phone: '',
@@ -269,12 +277,25 @@ export default {
        set(val) {
         this.value = val
       }   
-     }
-        
+     },
+     phonecheck() {
+       return this.phone.length || 0
+     },
+     checkinfo() {
+       return this.info.length || 0
+     }   
   },
   methods: {
-    clientInfo() {
-
+    async clientInfo() {
+      try {
+        if (this.phonecheck === 11) {
+          this.info = await this.$store.dispatch('days/clientinfo', Number(this.phone))
+         console.log(this.info)
+        } 
+      } catch (error) {
+        throw(error)
+      }
+      
     },
     clear() {
       this.$refs.form.reset()
@@ -285,7 +306,7 @@ export default {
           date: this.$store.getters.day,
           admin: this.$store.getters.admin,
           name: this.name,
-          phone: this.phone,
+          phone: Number(this.phone),
           from: this.from || '',
           n100: this.n100 || 0,
           n150: this.n150 || 0,
@@ -337,5 +358,9 @@ export default {
   form .v-data-table > .v-data-table__wrapper > table > tbody > tr > td input[type="number"] {
     max-width: 58px;
   } */
+
+  form.v-form {
+    margin-bottom: 30px;
+  }
 </style>
 

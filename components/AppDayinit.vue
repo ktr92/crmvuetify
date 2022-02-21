@@ -34,10 +34,16 @@ export default {
     }
   },
   methods: {
-    onSubmit() {
+    async onSubmit() {
       /* console.log(this.day, this.radioAdmin) */
-      this.$store.dispatch('setday', this.day)
-      this.$store.dispatch('setadmin', this.radioAdmin)
+      try {
+        await this.$store.dispatch('setcurrent', {date: this.day, admin: this.radioAdmin})
+        await this.$store.dispatch('setday', this.day)
+        await this.$store.dispatch('setadmin', this.radioAdmin)
+      } catch (error) {
+        throw error
+      }
+     
     }
   }
 }

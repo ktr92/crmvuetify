@@ -1,4 +1,5 @@
 const Days = require('../models/days.model')
+const Current = require('../models/current.model')
 
 module.exports.getAll = async (req, res) => {
   try {
@@ -32,6 +33,33 @@ module.exports.addRow = async (req, res) => {
   } catch (error) {
     /* console.log(error) */
     res.status(500).json(error)
+  }
+}
+module.exports.checkDay = async (req, res) => {
+  try {
+    const day = await Current.find({date: req.body.date})
+    res.status(200).json(day) 
+  } catch (error) {
+    /* console.log(error) */
+    res.status(500).json(error)
+  }
+}
+module.exports.setCurrent = async (req, res) => {
+  try {
+    const day = await new Current({...req.body})
+    await day.save()
+    res.status(201).json(day) 
+  } catch (error) {
+    /* console.log(error) */
+    res.status(500).json(error)
+  }
+}
+module.exports.getInfo = async (req, res) => {
+  try {
+    const client = await Days.find({phone: req.params.id})
+    res.status(200).json(client)
+  } catch (error) {
+    res.stattus(500).json(error)
   }
 }
 /* 

@@ -30,9 +30,7 @@
       fixed
       app
     >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      
-     
+    <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
     </v-app-bar>
     <v-main>
       <v-container>
@@ -45,7 +43,7 @@
         
       </v-container>
     </v-main>
-    <v-navigation-drawer
+    <!-- v-navigation-drawer
       v-model="rightDrawer"
       :right="right"
       temporary
@@ -70,7 +68,7 @@
 
       
 
-    </v-footer>
+    </v-footer> -->
 
   </v-app>
 </template>
@@ -109,7 +107,7 @@ export default {
         },
 
       ],
-      miniVariant: false,
+      miniVariant: true,
       right: true,
       rightDrawer: false,
       title: ''

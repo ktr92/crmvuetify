@@ -111,11 +111,13 @@ export default {
     let ready = 0
     // определяем, какое сегодня число
     const today = dateutils.formatDate(dateutils.getCurrentDate())
+    // проверяем, выбрали ли сегодня админа
+    const newday = await store.dispatch('checkday', {date: today})
     // получаем все заказы на сегодня
     const daystmp = await store.dispatch('days/fetchDay', store.getters.day || today)
     // получаем всех мастеров
     const masters = await store.dispatch('masters/fetchMasters')
-    // полчаем всех админов
+    // получаем всех админов
     const admins = await store.dispatch('admins/fetchAdmins')
     // сохраняем все полученные заказы во vuex 
     await store.dispatch('days/setDays', daystmp)
@@ -130,12 +132,20 @@ export default {
       await store.dispatch('days/setdays', days)
     } */
 
-    return {days, masters, ready, today, admins}
+    return {days, masters, ready, today, admins, newday}
   },
   data() { 
     return {
       orders: {},    
       headers: [],
+    }
+  },
+  mounted() {
+    if (this.newday.length > 0) {
+      if (this.newday[0].admin) {
+        this.$store.dispatch('setday', this.newday[0].date)
+        this.$store.dispatch('setadmin', this.newday[0].admin)
+     } 
     }
   },
   computed: {

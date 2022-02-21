@@ -14,7 +14,7 @@ const daysSchema = new Schema({
     type: String
   },
   phone: {
-    type: String
+    type: Number
   },
   name: {
     type: String

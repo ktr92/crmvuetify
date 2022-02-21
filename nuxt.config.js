@@ -38,8 +38,9 @@ export default {
 
  
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [
+  plugins: [    
     '@/plugins/axios',
+    '@/plugins/directives',
     { src: '@/plugins/notifications-ssr', ssr: true },
     { src: '@/plugins/notifications-client', ssr: false }
   ],
@@ -65,7 +66,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: process.env.BASEURL
+    baseURL: process.env.NODE_ENV ? process.env.BASEURL : 'http://localhost:3000'
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify

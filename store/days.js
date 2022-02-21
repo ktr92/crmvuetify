@@ -56,6 +56,13 @@ export const actions = {
       throw error
     }
   },
+  async clientinfo({commit}, phone) {
+    try {
+      return await this.$axios.$get(`/api/days/clientinfo/${phone}`)
+    } catch (error) {
+      throw(error)
+    }
+  }
 
 
 }

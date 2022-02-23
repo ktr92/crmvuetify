@@ -20,9 +20,9 @@
                 <v-text-field
                   v-model="phone"
                   v-mask="'8##########'"
-               
+                  class="input-phone"
                   label="Телефон"
-                  :rules="nameRules"
+                  :rules="phoneRules"
                   required
                   @change="clientInfo"
                 ></v-text-field>
@@ -41,6 +41,7 @@
                   v-model.number="n100"
                   label="100"
                   type="number" min="0"
+                  class="input-count"
                 ></v-text-field>
               </td>
               <td>
@@ -48,6 +49,7 @@
                   v-model.number="n150"
                   label="150"
                   type="number" min="0"
+                  class="input-count"
                 ></v-text-field>
               </td>
               <td>
@@ -55,6 +57,7 @@
                   v-model.number="n200"
                   label="200"
                   type="number" min="0"
+                  class="input-count"
                 ></v-text-field>
               </td>
               <td>
@@ -62,6 +65,7 @@
                   v-model.number="n250"
                   label="250"
                   type="number" min="0"
+                  class="input-count"
                 ></v-text-field>
               </td>
               <td>
@@ -69,6 +73,7 @@
                   v-model.number="n300"
                   label="300"
                   type="number" min="0"
+                  class="input-count"
                 ></v-text-field>
               </td>
               <td>
@@ -76,6 +81,7 @@
                   v-model.number="n350"
                   label="350"
                   type="number" min="0"
+                  class="input-count"
                 ></v-text-field>
               </td>
               <td>
@@ -83,6 +89,7 @@
                   v-model.number="n400"
                   label="400"
                   type="number" min="0"
+                  class="input-count"
                 ></v-text-field>
               </td>
               <td>
@@ -90,6 +97,7 @@
                   v-model.number="n450"
                   label="450"
                   type="number" min="0"
+                  class="input-count"
                 ></v-text-field>
               </td>
               <td>
@@ -97,6 +105,7 @@
                   v-model.number="n500"
                   label="500"
                   type="number" min="0"
+                  class="input-count"
                 ></v-text-field>
               </td>
               <td>
@@ -104,6 +113,7 @@
                   v-model.number="n550"
                   label="550"
                   type="number" min="0"
+                  class="input-count"
                 ></v-text-field>
               </td>
               <td>
@@ -111,6 +121,7 @@
                   v-model.number="n600"
                   label="600"
                   type="number" min="0"
+                  class="input-count"
                 ></v-text-field>
               </td>
               
@@ -132,9 +143,11 @@
               </td>
               <td>
                 <v-select
-                  :items="master"
+                  :items="masters"
+                  v-model="master"
                   label="Мастер"
-                   item-text="name"
+                  item-text="name"
+                  item-value="first"
                 ></v-select>
               </td>
               <td>
@@ -183,8 +196,6 @@
                   item-value="first"
                 ></v-select>
               </td>
-               
-
               <td>
                 <v-select
                   :items="locations"
@@ -193,10 +204,6 @@
                   item-value="first"
                 ></v-select>
               </td>
-               
-
-              
-             
             </tr>
           </tbody>
         </template>
@@ -224,8 +231,11 @@
 import AppOrders from '@/components/AppOrders'
 
 export default {
+  async asynData() {
+   
+  },
   components: {AppOrders},
-  props: ['master'],
+  props: ['masters'],
   data() {
     return {
       info: [],
@@ -250,13 +260,17 @@ export default {
       percent2: '',
       commentOrder: '',
       commentClient: '',
+      master: '',
       locations: ['Курская', 'Парк'],
-      blacklists: ['Да', 'Нет'],
+      blacklists: ['', 'Да'],
       location: 'Курская',
-      blacklist: 'Нет',
+      blacklist: '',
       nameRules: [
         v => !!v || 'Обязательное поле'       
       ],
+      phoneRules: [
+        v => v.length == 11
+      ]
      
     }
   },
@@ -278,11 +292,24 @@ export default {
         this.value = val
       }   
      },
-     phonecheck() {
-       return this.phone.length || 0
+     phonecheck:
+     {
+       get() {
+        return this.phone.length || 0
+       },
+       set(val) {
+        this.value = val
+      }   
      },
-     checkinfo() {
-       return this.info.length || 0
+   
+     checkinfo: {
+       get() {
+        return this.info.length || 0
+       },
+       set(val) {
+        this.value = val
+      }   
+       
      }   
   },
   methods: {
@@ -290,8 +317,11 @@ export default {
       try {
         if (this.phonecheck === 11) {
           this.info = await this.$store.dispatch('days/clientinfo', Number(this.phone))
-         console.log(this.info)
+         
         } 
+        else {
+          this.info = []
+        }
       } catch (error) {
         throw(error)
       }
@@ -299,6 +329,7 @@ export default {
     },
     clear() {
       this.$refs.form.reset()
+      this.info = []
     },
     async onSubmit() {
       try {
@@ -327,12 +358,14 @@ export default {
           commentOrder: this.commentOrder || '',
           commentClient: this.commentClient || '',
           location: this.location,
+          master: this.master,
           blacklist: this.blacklist,
         }
     
       await this.$store.dispatch('days/addRow', formData)
       this.$store.dispatch('days/addDay', formData)
       this.$refs.form.reset()
+      this.info = []
       this.$notify({         
           title: 'Готово!',
           type: 'success',
@@ -351,8 +384,14 @@ export default {
 </script>
 
 <style >
+  form .input-phone {
+    min-width: 50px;
+  }
   form .v-data-table > .v-data-table__wrapper > table > tbody > tr > td {
     padding: 0 5px;
+  }
+  form  .input-count {
+    width: 40px;
   }
 /*  
   form .v-data-table > .v-data-table__wrapper > table > tbody > tr > td input[type="number"] {
@@ -362,5 +401,24 @@ export default {
   form.v-form {
     margin-bottom: 30px;
   }
+  .v-list-item__title, .v-select__selection--comma {
+    font-size: 0.8rem;
+    width: max-content;
+  }
+  .v-list-item__content {
+    padding: 4px 0;
+  }
+  .v-list-item {
+    min-height: 30px;
+  }
+  
+  .v-select__selections input {
+    width: 40px;
+     min-width: 40px;
+  }
+  .v-select__selection--comma + input {
+   width: 0;
+  }
+
 </style>
 

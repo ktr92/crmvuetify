@@ -3,10 +3,9 @@
      <notifications position="bottom right" />
     <v-navigation-drawer
       v-model="drawer"
-      :mini-variant="miniVariant"
       :clipped="clipped"
-      fixed
-      app
+      absolute
+      temporary
     >
       <v-list>
         <v-list-item
@@ -82,7 +81,7 @@ export default {
     return {
       ready: false,
       clipped: false,
-      drawer: false,
+      drawer: null,
       fixed: false,
       items: [
         {

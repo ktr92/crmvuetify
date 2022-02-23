@@ -1,6 +1,6 @@
 <template>
   <div>
-    <transition name="fade">
+    <app-stats :orders="orders" :header="headers" :isfound="isfound" v-if="show"></app-stats>
     <v-data-table
       :headers="headers"
       :items="orders"
@@ -53,7 +53,9 @@
         </thead>
       </template>
       <template v-slot:item="props">
-        <tr>
+        <tr 
+          :class="{'bgred': (props.item.blacklist && props.item.blacklist != '') }"
+        >
            <td>{{ props.item.number }}</td>
            <td>{{ props.item.date }}</td>
            <td>{{ props.item.admin }}</td>
@@ -89,7 +91,7 @@
         </tr>
       </template>
     </v-data-table>
-    </transition>
+
   </div>
 </template>
 
@@ -116,5 +118,8 @@ export default {
   }
   .fade-enter, .fade-leave-to  {
     max-height: 0;
+  }
+  .bgred {
+    background: #ffe9e9;
   }
 </style>

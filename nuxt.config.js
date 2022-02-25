@@ -41,6 +41,7 @@ export default {
   plugins: [    
     '@/plugins/axios',
     '@/plugins/directives',
+    '@/plugins/globals',
     { src: '@/plugins/notifications-ssr', ssr: true },
     { src: '@/plugins/notifications-client', ssr: false }
   ],

@@ -28,11 +28,11 @@ export default {
   async asyncData({store, route}) {
     let ready = 0
     // определяем, какое сегодня число
-    const today = dateutils.formatDate(dateutils.getCurrentDate())
+    const today = dateutils.formatIso(dateutils.formatDate(dateutils.getCurrentDate()))
     // проверяем, выбрали ли сегодня админа
     const newday = await store.dispatch('checkday', {date: today})
     // получаем все заказы на сегодня
-    const daystmp = await store.dispatch('days/fetchDay', store.getters.day || today)
+    const daystmp = await store.dispatch('days/fetchDay',  dateutils.formatIso(store.getters.day) || today)
     // получаем всех мастеров
     const masters = await store.dispatch('masters/fetchMasters')
     // получаем всех админов

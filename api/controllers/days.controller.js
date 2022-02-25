@@ -11,7 +11,16 @@ module.exports.getAll = async (req, res) => {
 }
 module.exports.getOne = async (req, res) => {
   try {
-    const days = await Days.find({date: req.params.id})
+ 
+    const days = await Days.find({date: new Date(req.params.id)}).sort({number: 1})
+    res.status(200).json(days)
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}
+module.exports.getRange = async (req, res) => {
+  try {
+    const days = await Days.find({date: req.params.id}).sort({number: 1})
     res.status(200).json(days)
   } catch (error) {
     res.status(500).json(error)

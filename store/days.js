@@ -35,6 +35,14 @@ export const actions = {
     }
 
   },
+  async fetchDaysRange({ commit }, daysrange) {
+    try {
+      return await this.$axios.$get(`/api/days/range/${daysrange}`)
+    } catch (error) {
+      throw error
+    }
+
+  },
   async fetchAdmins({ commit }) {
     try {
       return await this.$axios.$get('/api/days/admins')

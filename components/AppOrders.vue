@@ -57,7 +57,7 @@
           :class="{'bgred': (props.item.blacklist && props.item.blacklist != '') }"
         >
            <td>{{ props.item.number }}</td>
-           <td>{{ props.item.date }}</td>
+           <td>{{ props.item.date | date('date') }}</td>
            <td>{{ props.item.admin }}</td>
            <td>{{ props.item.from }}</td>
            <td>{{ props.item.phone }}</td>

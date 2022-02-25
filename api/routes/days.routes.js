@@ -6,6 +6,7 @@ const router = Router()
 // days show
 router.get('/', ctr.getAll)
 router.get('/one/:id', ctr.getOne)
+router.get('/range/:id', ctr.getRange)
 router.get('/admins', ctr.getAdmins)
 router.post('/addrow', ctr.addRow)
 router.post('/check', ctr.checkDay)

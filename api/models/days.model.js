@@ -5,7 +5,7 @@ const daysSchema = new Schema({
     type: String
   },
   date: {
-    type: String,
+    type: Date,
   },
   admin: {
     type: String

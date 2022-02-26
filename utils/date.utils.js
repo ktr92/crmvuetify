@@ -9,9 +9,10 @@ function formatDate(date) {
 }
 
 function formatIso(datestr) {
-  let date = datestr.split(".")
+  let date = datestr/* .split(".") */
   var tzoffset = (new Date()).getTimezoneOffset() * 60000;
-  var dateformat = (new Date(new Date(date[2], date[1] - 1, date[0]) - tzoffset)).toISOString()
+  var dateformat = (new Date(new Date() - tzoffset)).toISOString()
+ /*  var dateformat = (new Date(new Date(date[2], date[1] - 1, date[0]) - tzoffset)).toISOString() */
   return dateformat
 }
 

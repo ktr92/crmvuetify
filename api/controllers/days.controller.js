@@ -11,8 +11,11 @@ module.exports.getAll = async (req, res) => {
 }
 module.exports.getOne = async (req, res) => {
   try {
- 
-    const days = await Days.find({date: new Date(req.params.id)}).sort({number: 1})
+   /*  const date = req.params.id.slice(0,10) */
+    console.log(req.params.id)
+    
+    const days = await Days.find(
+      {date:{$gte:ISODate('2019-06-25'),$lt:ISODate('2019-06-28')}}).sort({number: 1})
     res.status(200).json(days)
   } catch (error) {
     res.status(500).json(error)
@@ -20,7 +23,8 @@ module.exports.getOne = async (req, res) => {
 }
 module.exports.getRange = async (req, res) => {
   try {
-    const days = await Days.find({date: req.params.id}).sort({number: 1})
+    const date = req.params.id.slice(0,10)
+    const days = await Days.find({date: new Date(date)}).sort({number: 1})
     res.status(200).json(days)
   } catch (error) {
     res.status(500).json(error)
@@ -46,7 +50,8 @@ module.exports.addRow = async (req, res) => {
 }
 module.exports.checkDay = async (req, res) => {
   try {
-    const day = await Current.find({date: req.body.date})
+   
+    const day = await Current.find({date: new Date(req.body.date)})
     res.status(200).json(day) 
   } catch (error) {
     /* console.log(error) */
@@ -55,7 +60,7 @@ module.exports.checkDay = async (req, res) => {
 }
 module.exports.setCurrent = async (req, res) => {
   try {
-    const day = await new Current({...req.body})
+    const day = await new Current({date: new Date(req.body.date), admin: req.body.admin})
     await day.save()
     res.status(201).json(day) 
   } catch (error) {

@@ -15,7 +15,7 @@
       >
         <template v-slot:activator="{ on, attrs }">
           <v-text-field
-            v-model="computedDateFormatted"
+            v-model="dateRangeText"
             label="Выберите день"
             prepend-icon="mdi-calendar"
             name="date"
@@ -30,7 +30,7 @@
           :max="maxDate"
           locale="ru-Ru"
           first-day-of-week="1"
-          
+          range
         ></v-date-picker>
       </v-menu>
       <v-btn
@@ -61,15 +61,15 @@ export default {
   components: { AppTable },
   async asyncData({store}) {
     let ready = 0
-    let datestr = '25.06.2019'
-    const days = await store.dispatch('days/fetchDay', dateutils.formatIso(datestr))
+    let datestr = dateutils.getCurrentDate()
+    const days = await store.dispatch('days/fetchDay', dateutils.formatIso(datestr).slice(0,10))
     ready = 1
     return {days, ready}
   },
   data() {
     return {
-      date: dateutils.getCurrentDate(),
-      dates: [],
+      date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      dates: [(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10), (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)],
       dateFormatted: dateutils.formatDate(dateutils.getCurrentDate()),
       maxDate: '',
       valid: false,   
@@ -94,30 +94,36 @@ export default {
     },
     dayslength() {
       return this.days.length
-    }   
+    },
+    dateRangeText () {
+      return this.dates.join(' ~ ')
+    },
   },
   watch: {
     date (val) {
-      this.dateFormatted = this.dates.map(item => dateutils.formatDate(item))
+     /*  this.dateFormatted = this.dates.map(item => dateutils.formatDate(item)) */
     },
     dates (val) {
-      dateutils.formatDate(this.date)
+     /*  dateutils.formatDate(this.date) */
     },
   }, 
   methods: {
      async onSubmit() {
       const formData = {        
-        date: this.dateFormatted
+        dates: this.dates
       }
     /*   console.log(formData) */
     try {
-      this.days = await this.$store.dispatch('days/fetchDaysRange', formData.date)
+      this.days = await this.$store.dispatch('days/fetchDay', formData.dates)
     } catch (error) {
       throw error
     }
      
       
     }
+  },
+  mounted() {
+   
   }
   
 

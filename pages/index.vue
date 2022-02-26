@@ -28,11 +28,12 @@ export default {
   async asyncData({store, route}) {
     let ready = 0
     // определяем, какое сегодня число
-    const today = dateutils.formatIso(dateutils.formatDate(dateutils.getCurrentDate()))
+    const today = dateutils.getCurrentDate()
     // проверяем, выбрали ли сегодня админа
-    const newday = await store.dispatch('checkday', {date: today})
+    const newday = await store.dispatch('checkday', {date: today.slice(0,10)})
     // получаем все заказы на сегодня
-    const daystmp = await store.dispatch('days/fetchDay',  dateutils.formatIso(store.getters.day) || today)
+    const daystmp = await store.dispatch('days/fetchDay',  dateutils.formatIso(store.getters.day.slice(0,10)) || today.slice(0,10))   
+   
     // получаем всех мастеров
     const masters = await store.dispatch('masters/fetchMasters')
     // получаем всех админов
@@ -63,7 +64,7 @@ export default {
       if (this.newday[0].admin) {
         this.$store.dispatch('setday', this.newday[0].date)
         this.$store.dispatch('setadmin', this.newday[0].admin)
-     } 
+      } 
     }
   },
   computed: {

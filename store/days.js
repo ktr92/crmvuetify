@@ -53,7 +53,6 @@ export const actions = {
   },
   async addRow({ commit }, data) {
     try {
-    
       const req = await this.$axios.$post('/api/days/addrow', data).then(res => {  
         return req
       }).catch(err => {

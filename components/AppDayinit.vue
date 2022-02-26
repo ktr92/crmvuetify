@@ -37,8 +37,8 @@ export default {
     async onSubmit() {
       /* console.log(this.day, this.radioAdmin) */
       try {
-        await this.$store.dispatch('setcurrent', {date: this.day, admin: this.radioAdmin})
-        await this.$store.dispatch('setday', this.day)
+        await this.$store.dispatch('setcurrent', {date: this.day.slice(0,10), admin: this.radioAdmin})
+        await this.$store.dispatch('setday', this.day.slice(0,10))
         await this.$store.dispatch('setadmin', this.radioAdmin)
       } catch (error) {
         throw error

@@ -22,7 +22,7 @@
                   v-mask="'8##########'"
                   class="input-phone"
                   label="Телефон"
-                  :rules="phoneRules"
+                 
                   required
                   @change="clientInfo"
                 ></v-text-field>
@@ -229,6 +229,7 @@
 
 <script>
 import AppOrders from '@/components/AppOrders'
+import dateutils from '@/utils/date.utils'
 
 export default {
   async asynData() {
@@ -269,7 +270,7 @@ export default {
         v => !!v || 'Обязательное поле'       
       ],
       phoneRules: [
-        v => v.length == 11
+        v => v.length == 11 || ''
       ]
      
     }
@@ -334,7 +335,8 @@ export default {
     async onSubmit() {
       try {
         const formData = {
-          date: this.$store.getters.day,
+         /*  date: this.$store.getters.day, */
+          date: dateutils.getCurrentDate().slice(0, 10),
           admin: this.$store.getters.admin,
           name: this.name,
           phone: Number(this.phone),
@@ -361,7 +363,9 @@ export default {
           master: this.master,
           blacklist: this.blacklist,
         }
-    
+
+       
+
       await this.$store.dispatch('days/addRow', formData)
       this.$store.dispatch('days/addDay', formData)
       this.$refs.form.reset()

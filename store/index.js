@@ -17,7 +17,6 @@ export const mutations = {
   clearError(state) {
     state.error = null
   }
-
 }
 
 export const actions = {

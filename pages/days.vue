@@ -25,7 +25,7 @@
           ></v-text-field>
         </template>
         <v-date-picker
-          v-model="date"
+          v-model="dates"
           name="dates"
           :max="maxDate"
           locale="ru-Ru"
@@ -69,7 +69,10 @@ export default {
   data() {
     return {
       date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-      dates: [(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10), (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)],
+      dates: [
+        (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10), 
+        (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
+        ],
       dateFormatted: dateutils.formatDate(dateutils.getCurrentDate()),
       maxDate: '',
       valid: false,   
@@ -96,7 +99,7 @@ export default {
       return this.days.length
     },
     dateRangeText () {
-      return this.dates.join(' ~ ')
+      return this.dates
     },
   },
   watch: {

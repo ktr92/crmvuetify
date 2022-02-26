@@ -7,16 +7,24 @@ module.exports.getAll = async (req, res) => {
     res.status(200).json(days)
   } catch (error) {
     res.status(500).json(error)
-  }
+  } 
 }
 module.exports.getOne = async (req, res) => {
   try {
    /*  const date = req.params.id.slice(0,10) */
-    console.log(req.params.id)
-    
-    const days = await Days.find(
-      {date:{$gte:ISODate('2019-06-25'),$lt:ISODate('2019-06-28')}}).sort({number: 1})
-    res.status(200).json(days)
+    const dates = req.params.id.split(',')
+    let days = []
+    if (dates.length > 1) {
+      let dateStart = new Date(dates[0]).toISOString().slice(0,10)
+      let dateEnd = new Date(dates[1]).toISOString().slice(0,10)
+      days = await Days.find({date:{$gte:dateStart, $lte:dateEnd}})
+    }
+    else {
+      let dateStart = new Date(dates[0]).toISOString().slice(0,10)
+      days = await Days.find({date: dateStart})
+    }
+   
+    res.status(200).json(days)   
   } catch (error) {
     res.status(500).json(error)
   }

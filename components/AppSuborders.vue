@@ -1,10 +1,12 @@
 <template>
   <div>
+    
     <app-stats :orders="orders" :header="headers" :isfound="isfound" v-if="show"></app-stats>
     <div>
-      <v-data-table
+      <div v-for="(order, idx) in ordersGroup" :key="idx">
+          <v-data-table
             :headers="headers"
-            :items="orders"
+            :items="order"
             :items-per-page="-1"
             class="elevation-1"
             :class="{tablesuccess: isfound}"
@@ -57,7 +59,7 @@
               <tr 
                 :class="{'bgred': (props.item.blacklist && props.item.blacklist != '') }"
               >
-                <td>{{ props.item.number || orders.indexOf(props.item) + 1 }}</td>
+                <td>{{ props.item.number || order.indexOf(props.item) + 1 }}</td>
                 <td>{{ props.item.date | date('date') }}</td>
                 <td>{{ props.item.admin }}</td>
                 <td>{{ props.item.from }}</td>
@@ -93,7 +95,7 @@
             </template>
           </v-data-table>
          </div>
-     
+      </div>
   </div>
 </template>
 
@@ -105,7 +107,11 @@ export default {
       headers: []
     }
   },
-  
+  computed: {
+    ordersGroup() {
+      return this.isfound ? this.orders : _.groupBy(this.orders, order => order.date)
+    }
+  }
 }
 </script>
 

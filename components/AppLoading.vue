@@ -1,10 +1,17 @@
 <template>
-  <div class="loading-page">
+  <div class="loading-page" :class="{inblock: inblock}">
     <div class="loading"></div>
   </div>
 </template>
 <script>
   export default {
+    props: {
+      inblock: {
+        type: Boolean,
+        required: false,
+        default: false
+      }
+    }
     /* data: () => ({
       loading: false,
     }),
@@ -37,6 +44,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+  }
+  .loading-page.inblock {
+    position: relative;
   }
   .loading {
     display: inline-block;

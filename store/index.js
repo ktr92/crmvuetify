@@ -1,7 +1,8 @@
 export const state = () => ({
   error: '',
   admin: '',
-  day: ''
+  day: '',
+  count: 0
 })
 
 export const mutations = {
@@ -10,6 +11,9 @@ export const mutations = {
   },
   setDay(state, payload) {
     state.day = payload
+  },
+  addCount(state) {
+    state.count = state.count++
   },
   setError(state, error) {
     state.error = error
@@ -50,5 +54,6 @@ export const actions = {
 export const getters = {
   admin: state => state.admin,
   day: state => state.day,
+  count: state => state.count,
   error: state => state.error
 }

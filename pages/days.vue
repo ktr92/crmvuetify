@@ -38,15 +38,20 @@
         type="submit"
         
       >
-        Показать
+        Обновить
       </v-btn>
      
     </v-form>
     <div>
-      <app-orders :orders="days" :show="checkinfo" :isfound="0" v-if="dayslength"></app-orders>
-      <div v-else>Данных за этот день не найдено</div>
-    </div>
-         
+      <div v-if="ready">
+          <app-adminstats :orders="days" :isfound="0" v-show="checkinfo"></app-adminstats>
+          <app-suborders :orders="days" :show="checkinfo" :isfound="0" v-if="dayslength"></app-suborders>          
+          <div v-else>Данных за этот день не найдено</div>
+        </div>
+        <div class="wrapper" v-else>
+          <AppLoading :inblock="true"/>
+        </div>
+     </div> 
 
 </div>
  <!--  <app-table :items="days" :headers="headers"></app-table> -->
@@ -56,9 +61,10 @@
 <script>
 import AppTable from '~/components/AppTable.vue'
 import dateutils from '@/utils/date.utils'
+import AppLoading from '@/components/AppLoading.vue'
 
 export default {
-  components: { AppTable },
+  components: { AppTable, AppLoading },
   async asyncData({store}) {
     let ready = 0
     let datestr = dateutils.getCurrentDate()
@@ -112,15 +118,17 @@ export default {
   }, 
   methods: {
      async onSubmit() {
-      const formData = {        
-        dates: this.dates
+       this.ready = 0 
+        const formData = {        
+          dates: this.dates.sort((a, b) => new Date(a) - new Date(b))
+        }
+      /*   console.log(formData) */
+      try {
+        this.days = await this.$store.dispatch('days/fetchDay', formData.dates)
+      } catch (error) {
+        throw error
       }
-    /*   console.log(formData) */
-    try {
-      this.days = await this.$store.dispatch('days/fetchDay', formData.dates)
-    } catch (error) {
-      throw error
-    }
+      this.ready =  1
      
       
     }
@@ -155,4 +163,10 @@ td, th {
     max-width: 120px;
   }
   [v-cloak] { display: none; }
+  .wrapper {
+    position: relative;
+  }
+  .v-data-footer {
+    display: none !important;
+  }
 </style>

@@ -42,6 +42,7 @@ export default {
     '@/plugins/axios',
     '@/plugins/directives',
     '@/plugins/globals',
+    '@/plugins/lodash.js',
     { src: '@/plugins/notifications-ssr', ssr: true },
     { src: '@/plugins/notifications-client', ssr: false }
   ],

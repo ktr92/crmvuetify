@@ -98,8 +98,11 @@ td, th {
 
   td.td--comment {
     white-space: normal !important;
-    max-width: 120px;
+    width: 120px;
   }
   [v-cloak] { display: none; }
+  .v-data-footer {
+    display: none !important;
+  }
 
 </style>

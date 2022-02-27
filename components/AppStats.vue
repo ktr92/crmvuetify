@@ -27,7 +27,7 @@ export default {
     return {
       stats: [],
       headers: [
-        'Всего посещений',
+        'Всего клиентов',
         'Всего за заточку (руб)',
         'Всего за продажи (руб)',
         'Итого вал (руб)',
@@ -109,11 +109,14 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   td {
     max-width: 200px;
   }
   .theme--light.v-data-table.statstable {
     background: #f5f5f5;
+  }
+  .statstable  {
+    margin-bottom: 30px;
   }
 </style>

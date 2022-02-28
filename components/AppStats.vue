@@ -10,9 +10,12 @@
         </thead>
         <tbody>
           <tr>
-           <td 
-            v-for="(item, idx) in values"
-            :key="idx">{{ item }} </td>
+           <td>{{ values[0] }} </td>
+           <td>{{ values[1] | price('price')}} </td>
+           <td>{{ values[2] | price('price')}} </td>
+           <td>{{ values[3] | price('price')}} </td>
+           <td>{{ values[4] }} </td>
+           <td>{{ values[5] }} </td>
           </tr>
         </tbody>
       </template>

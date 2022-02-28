@@ -1,6 +1,6 @@
 <template>
   <div>
-    <app-stats :orders="orders" :header="headers" :isfound="isfound" v-if="show"></app-stats>
+   
     <div>
       <v-data-table
             :headers="headers"
@@ -77,13 +77,13 @@
                 <td>{{ props.item.n500 }}</td>
                 <td>{{ props.item.n550 }}</td>
                 <td>{{ props.item.n600 }}</td>
-                  <td>{{ props.item.summ }}</td> 
+                  <td>{{ props.item.summ | price('price') }}</td> 
                 <td>{{ props.item.percent1 }}</td> 
                 
                 <td>{{ props.item.master }}</td> 
-                <td>{{ props.item.sale }}</td> 
+                <td>{{ props.item.sale | price('price') }}</td> 
                 <td>{{ props.item.percent2 }}</td> 
-                <td>{{ props.item.total }}</td>          
+                <td>{{ props.item.total | price('price') }}</td>          
                 <td class="td--comment">{{ props.item.commentOrder }}</td> 
                 <td class="td--comment">{{ props.item.commentClient }}</td> 
                 <td>{{ props.item.blacklist }}</td> 

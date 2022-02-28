@@ -9,24 +9,36 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(admin, idx) in adminsGroup" :key="idx">
+          <tr v-for="(master, idx) in mastersGroup" :key="idx">
             <td>
-              {{ admin[0].admin }}
+              {{ master[0].master }}
             </td>
+            
             <td>
-              {{ Object.keys(_.groupBy(admin, item => item.date)).length }}
+              {{ master.length }}
             </td>
+            
             <td>
-              {{ admin.length }}
+              {{ _.sum(
+                [
+                  _.sumBy(master, 'n100'),
+                  _.sumBy(master, 'n150'),
+                  _.sumBy(master, 'n200'),
+                  _.sumBy(master, 'n250'),
+                  _.sumBy(master, 'n300'),
+                  _.sumBy(master, 'n350'),
+                  _.sumBy(master, 'n400'),
+                  _.sumBy(master, 'n450'),
+                  _.sumBy(master, 'n500'),
+                  _.sumBy(master, 'n550'),
+                  _.sumBy(master, 'n600'),
+                  _.sumBy(master, 'n650')
+                ])              
+              }}
             </td>
+            
             <td>
-              {{ _.sumBy(admin, 'summ') | price('price') }}
-            </td>
-            <td>
-              {{ _.sumBy(admin, 'sale') | price('price')}}
-            </td>
-            <td>
-              {{ _.sumBy(admin, 'total') | price('price')}}
+              {{ _.sumBy(master, 'summ') | price('price')}}
             </td>
             
           </tr>
@@ -43,12 +55,10 @@ export default {
     return {
       stats: [],
       headers: [
-        'Админы',
-        'Дней',
+        'Мастера',
         'Клиентов',
-        'Всего заточка',
-        'Всего продажи',
-        'Всего вал'
+        'Всего инструментов',
+        'Сумма'
         ],
      /*  count: 0,
       summ: 0,
@@ -65,20 +75,20 @@ export default {
     }
   },  
   computed: {
-    adminsGroup() {
-      return _.groupBy(this.orders, order => order.admin)
+    mastersGroup() {
+      return _.groupBy(this.orders, order => order.master)
     },
     /* adminsGroupArray() {
       return _.values(this.adminsGroup)
     }, */
-    adminOrdersCount() {
+    masterOrdersCount() {
        return [
-         this.adminsGroup.length
+         this.mastersGroup.length
        ]
     },
     values() {
       return [
-        this.adminsGroup
+        this.mastersGroup
       ]
     }
   },
@@ -86,7 +96,7 @@ export default {
   mounted() {
    /*  console.log(this.values) */
     console.log(this.orders) 
-    console.log( _.groupBy(this.orders, order => order.admin)) 
+    console.log( _.groupBy(this.orders, order => order.master)) 
    /*  console.log(_.values( _.groupBy(this.orders, order => order.admin))) 
     console.log(_.sumBy(_.values( _.groupBy(this.orders, order => order.admin)), client => client.summ)) */
   },

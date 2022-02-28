@@ -44,7 +44,9 @@
     </v-form>
     <div>
       <div v-if="ready">
+          <app-stats :orders="days" :header="headers" :isfound="0" v-if="checkinfo"></app-stats>
           <app-adminstats :orders="days" :isfound="0" v-show="checkinfo"></app-adminstats>
+          <app-masterstats :orders="days" :isfound="0" v-show="checkinfo"></app-masterstats>
           <app-suborders :orders="days" :show="checkinfo" :isfound="0" v-if="dayslength"></app-suborders>          
           <div v-else>Данных за этот день не найдено</div>
         </div>

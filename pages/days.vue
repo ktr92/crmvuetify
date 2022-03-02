@@ -39,47 +39,38 @@
         
       >
         Обновить
-      </v-btn>
-     
+      </v-btn>     
     </v-form>
     <div>
-      <div v-if="ready">
+      <div >
           <app-stats :orders="days" :header="headers" :isfound="0" v-if="checkinfo"></app-stats>
           <app-adminstats :orders="days" :isfound="0" v-show="checkinfo"></app-adminstats>
           <app-masterstats :orders="days" :isfound="0" v-show="checkinfo"></app-masterstats>
           <app-suborders :orders="days" :show="checkinfo" :isfound="0" v-if="dayslength"></app-suborders>          
           <div v-else>Данных за этот день не найдено</div>
-        </div>
-        <div class="wrapper" v-else>
-          <AppLoading :inblock="true"/>
-        </div>
+        </div>       
      </div> 
-
 </div>
- <!--  <app-table :items="days" :headers="headers"></app-table> -->
-
 </template>
 
 <script>
 import AppTable from '~/components/AppTable.vue'
 import dateutils from '@/utils/date.utils'
-import AppLoading from '@/components/AppLoading.vue'
+import AppLoader from '@/components/AppLoader.vue'
 
 export default {
-  components: { AppTable, AppLoading },
+  components: { AppTable, AppLoader },
   async asyncData({store}) {
-    let ready = 0
     let datestr = dateutils.getCurrentDate()
     const days = await store.dispatch('days/fetchDay', dateutils.formatIso(datestr).slice(0,10))
-    ready = 1
-    return {days, ready}
+    return {days}
   },
   data() {
     return {
-      date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      date: dateutils.getCurrentDateSplit(),
       dates: [
-        (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10), 
-        (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
+        dateutils.getCurrentDateSplit(), 
+        dateutils.getCurrentDateSplit()
         ],
       dateFormatted: dateutils.formatDate(dateutils.getCurrentDate()),
       maxDate: '',
@@ -95,14 +86,7 @@ export default {
        set(val) {
         this.value = val
       }   
-       
      },
-    computedDateFormatted () {
-      return dateutils.formatDate(this.date)
-    },
-    computedDateRangeFormatted () {
-      return this.dates.map(item => dateutils.formatDate(item))
-    },
     dayslength() {
       return this.days.length
     },
@@ -110,36 +94,20 @@ export default {
       return this.dates
     },
   },
-  watch: {
-    date (val) {
-     /*  this.dateFormatted = this.dates.map(item => dateutils.formatDate(item)) */
-    },
-    dates (val) {
-     /*  dateutils.formatDate(this.date) */
-    },
-  }, 
   methods: {
      async onSubmit() {
-       this.ready = 0 
+       this.$nuxt.$loading.start()
         const formData = {        
           dates: this.dates.sort((a, b) => new Date(a) - new Date(b))
         }
-      /*   console.log(formData) */
       try {
         this.days = await this.$store.dispatch('days/fetchDay', formData.dates)
       } catch (error) {
         throw error
       }
-      this.ready =  1
-     
-      
+      this.$nuxt.$loading.finish()
     }
-  },
-  mounted() {
-   
   }
-  
-
 }
 </script>
 
@@ -170,5 +138,14 @@ td, th {
   }
   .v-data-footer {
     display: none !important;
+  }
+   td {
+    max-width: 200px;
+  }
+  .theme--light.v-data-table.statstable {
+    background: #f5f5f5;
+  }
+  .statstable  {
+    margin-bottom: 30px;
   }
 </style>

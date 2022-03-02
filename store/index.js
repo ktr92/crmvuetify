@@ -34,7 +34,6 @@ export const actions = {
     context.commit('setError', error)
   },
   async checkday(context, day) {
-    /* context.commit('setDay', day) */
     try {
       return await this.$axios.$post('/api/days/check', day)
     } catch (error) {
@@ -42,7 +41,6 @@ export const actions = {
     }
   },
   async setcurrent(context, data) {
-    /* context.commit('setDay', day) */
     try {
       return await this.$axios.$post('/api/days/current', data)
     } catch (error) {

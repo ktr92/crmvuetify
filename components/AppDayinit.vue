@@ -35,7 +35,6 @@ export default {
   },
   methods: {
     async onSubmit() {
-      /* console.log(this.day, this.radioAdmin) */
       try {
         await this.$store.dispatch('setcurrent', {date: this.day.slice(0,10), admin: this.radioAdmin})
         await this.$store.dispatch('setday', this.day.slice(0,10))

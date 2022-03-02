@@ -6,10 +6,8 @@
       @submit.prevent="onSubmit">
       <v-simple-table>
         <template v-slot:default>
-         
           <tbody>
             <tr>
-              
               <td>
                 <v-text-field
                   v-model="from"
@@ -35,7 +33,6 @@
                     required
                   ></v-text-field>
               </td>
-              
               <td>
                 <v-text-field
                   v-model.number="n100"
@@ -282,8 +279,7 @@ export default {
       },
       set(val) {
         this.value = val
-      }     
-      
+      }  
     },
      total:  {
        get() {
@@ -302,15 +298,13 @@ export default {
         this.value = val
       }   
      },
-   
      checkinfo: {
        get() {
         return this.info.length || 0
        },
        set(val) {
         this.value = val
-      }   
-       
+      } 
      }   
   },
   methods: {
@@ -318,7 +312,6 @@ export default {
       try {
         if (this.phonecheck === 11) {
           this.info = await this.$store.dispatch('days/clientinfo', Number(this.phone))
-         
         } 
         else {
           this.info = []
@@ -326,13 +319,13 @@ export default {
       } catch (error) {
         throw(error)
       }
-      
     },
     clear() {
       this.$refs.form.reset()
       this.info = []
     },
     async onSubmit() {
+       this.$nuxt.$loading.start()
       try {
         const formData = {
          /*  date: this.$store.getters.day, */
@@ -363,9 +356,6 @@ export default {
           master: this.master,
           blacklist: this.blacklist,
         }
-
-       
-
       await this.$store.dispatch('days/addRow', formData)
       this.$store.dispatch('days/addDay', formData)
       this.$refs.form.reset()
@@ -382,6 +372,7 @@ export default {
           duration: 4000,         
         })
       }
+      this.$nuxt.$loading.finish()
     }
   }
 }
@@ -397,11 +388,6 @@ export default {
   form  .input-count {
     width: 40px;
   }
-/*  
-  form .v-data-table > .v-data-table__wrapper > table > tbody > tr > td input[type="number"] {
-    max-width: 58px;
-  } */
-
   form.v-form {
     margin-bottom: 30px;
   }

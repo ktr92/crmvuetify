@@ -1,10 +1,17 @@
 <template>
-  <div v-if="loading" class="loading-page">
+  <div v-if="loading" class="loading-page"  :class="{inblock: inblock}">
     <div class="loading"></div>
   </div>
 </template>
 <script>
   export default {
+    props: {
+      inblock: {
+        type: Boolean,
+        required: false,
+        default: false
+      }
+    },
     data: () => ({
       loading: false,
     }),
@@ -46,6 +53,9 @@
     border-radius: 50%;
     border-top-color: #158876;
     animation: spin 1s ease-in-out infinite;
+  }
+  .loading-page.inblock {
+    position: relative;
   }
   @keyframes spin {
     to {

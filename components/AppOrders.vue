@@ -1,6 +1,5 @@
 <template>
   <div>
-   
     <div>
       <v-data-table
             :headers="headers"
@@ -104,8 +103,7 @@ export default {
     return {
       headers: []
     }
-  },
-  
+  },  
 }
 </script>
 

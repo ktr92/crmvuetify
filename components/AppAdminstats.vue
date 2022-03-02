@@ -50,58 +50,16 @@ export default {
         'Всего продажи',
         'Всего вал'
         ],
-     /*  count: 0,
-      summ: 0,
-      sale: 0,
-      total: 0,
-      comment: '',
-      blacklist: '' */
     }
   },
-
-  watch: {
-    orders(val) {
-      console.log(this.values)
-    }
-  },  
   computed: {
     adminsGroup() {
       return _.groupBy(this.orders, order => order.admin)
     },
-    /* adminsGroupArray() {
-      return _.values(this.adminsGroup)
-    }, */
-    adminOrdersCount() {
-       return [
-         this.adminsGroup.length
-       ]
-    },
-    values() {
-      return [
-        this.adminsGroup
-      ]
-    }
-  },
-
-  mounted() {
-   /*  console.log(this.values) */
-    console.log(this.orders) 
-    console.log( _.groupBy(this.orders, order => order.admin)) 
-   /*  console.log(_.values( _.groupBy(this.orders, order => order.admin))) 
-    console.log(_.sumBy(_.values( _.groupBy(this.orders, order => order.admin)), client => client.summ)) */
-  },
-  
+  },  
 }
 </script>
 
 <style scoped>
-  td {
-    max-width: 200px;
-  }
-  .theme--light.v-data-table.statstable {
-    background: #f5f5f5;
-  }
-  .statstable  {
-    margin-bottom: 30px;
-  }
+ 
 </style>

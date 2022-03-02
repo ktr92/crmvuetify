@@ -70,8 +70,6 @@ export const actions = {
       throw(error)
     }
   }
-
-
 }
 
 export const getters = {

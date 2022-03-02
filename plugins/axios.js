@@ -12,14 +12,10 @@ export default function ({ $axios, redirect, store }) {
         redirect('/admin/login?message=session')
         store.dispatch('auth/logout')
       } */
-
       if (error.response.status === 500) {
         console.log(error.response)
         console.error('Server 500 error')
       }
-      
-     
-      
     }
   })
 }

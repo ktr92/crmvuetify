@@ -26,45 +26,34 @@ import AppDayinit from '@/components/AppDayinit.vue'
 export default {
   components: { AppOrders, AppForm, AppDayinit },
   async asyncData({store, route}) {
-    let ready = 0
     // определяем, какое сегодня число
     const today = dateutils.getCurrentDate()
     // проверяем, выбрали ли сегодня админа
     const newday = await store.dispatch('checkday', {date: today.slice(0,10)})
+    let admins = []
+    if (newday.length > 0) {
+      if (newday[0].admin) {
+        store.dispatch('setday', newday[0].date)
+        store.dispatch('setadmin', newday[0].admin)
+      } 
+    } else {
+      // получаем всех админов
+      admins = await store.dispatch('admins/fetchAdmins')
+    }
     // получаем все заказы на сегодня
     const daystmp = await store.dispatch('days/fetchDay',  dateutils.formatIso(store.getters.day.slice(0,10)) || today.slice(0,10))   
-   
     // получаем всех мастеров
     const masters = await store.dispatch('masters/fetchMasters')
-    // получаем всех админов
-    const admins = await store.dispatch('admins/fetchAdmins')
     // сохраняем все полученные заказы во vuex 
     await store.dispatch('days/setDays', daystmp)
     // получаем все заказы из vuex
     const days = store.getters['days/days']
-    ready = 1
-   /*  if (store.getters['days/days'].length > 0) {
-      days = store.getters['days/days']
-    }
-    else {
-      days = await store.dispatch('days/fetch')
-      await store.dispatch('days/setdays', days)
-    } */
-
-    return {days, masters, ready, today, admins, newday}
+    return {days, masters, today, admins, newday}
   },
   data() { 
     return {
       orders: {},    
       headers: [],
-    }
-  },
-  mounted() {
-    if (this.newday.length > 0) {
-      if (this.newday[0].admin) {
-        this.$store.dispatch('setday', this.newday[0].date)
-        this.$store.dispatch('setadmin', this.newday[0].admin)
-      } 
     }
   },
   computed: {

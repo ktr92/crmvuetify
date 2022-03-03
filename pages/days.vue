@@ -41,6 +41,7 @@
         Обновить
       </v-btn>     
     </v-form>
+    <br/>
     <div>
       <div >
         <v-card>

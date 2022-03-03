@@ -79,8 +79,14 @@ const daysSchema = new Schema({
   blacklist: {
     type: String
   },
-  location: {
+ /*  location: {
     type: String
+  }, */
+  courier: {
+    type: String
+  },
+  courierSumm: {
+    type: Number
   }
 })
 

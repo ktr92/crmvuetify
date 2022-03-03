@@ -17,7 +17,7 @@
         </v-btn>
      </v-form>
     </v-card>
-    <app-table :headers="headers" :items="masters"></app-table>
+    <app-table :headers="headers" :items="couriers"></app-table>
   </div>
 </template>
 
@@ -26,8 +26,8 @@ import AppTable from '@/components/AppTable.vue'
 
 export default {
   async asyncData({store}) {
-    const masters = await store.dispatch('masters/fetchMasters')
-    return {masters}
+    const couriers = await store.dispatch('couriers/fetchCouriers')
+    return {couriers}
   },
   data() {
     return {
@@ -53,10 +53,10 @@ export default {
         name: this.name
       }
       try {
-        await this.$store.dispatch('masters/newMaster', formData)
-        this.masters.push(formData)
+        await this.$store.dispatch('couriers/newCourier', formData)
+        this.couriers.push(formData)
         this.$notify({         
-          title: 'Новый мастер успешно добавлен!',
+          title: 'Новый курьер успешно добавлен!',
           type: 'success',
           duration: 4000,         
         })
@@ -65,7 +65,7 @@ export default {
       } catch (error) {
         if (this.$store.getters.error.status === 409) {
           this.$notify({         
-            title: 'Такой мастер уже есть!',
+            title: 'Такой курьер уже есть!',
             type: 'warn',
             duration: 4000,         
           })
@@ -76,11 +76,8 @@ export default {
           type: 'error',
           duration: 4000,         
         })
-        }
-        
-      }
-     
-      
+        }        
+      }  
     }
   },
   components: {AppTable}

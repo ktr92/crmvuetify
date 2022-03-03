@@ -4,7 +4,7 @@
        <app-dayinit :admins="admins" :day="today"></app-dayinit>
     </div>
     <div v-else>
-      <app-form :masters="masters"></app-form>
+      <app-form :masters="masters" :couriers="couriers"></app-form>
       <div>
         <app-orders :orders="days" :show="checkdays" :isfound="0" v-if="checkdays"></app-orders>
         <div v-else>Клиентов пока не было</div>
@@ -42,13 +42,14 @@ export default {
     }
     // получаем все заказы на сегодня
     const daystmp = await store.dispatch('days/fetchDay',  dateutils.formatIso(store.getters.day.slice(0,10)) || today.slice(0,10))   
-    // получаем всех мастеров
+    // получаем всех мастеров и курьеров
     const masters = await store.dispatch('masters/fetchMasters')
+    const couriers = await store.dispatch('couriers/fetchCouriers')
     // сохраняем все полученные заказы во vuex 
     await store.dispatch('days/setDays', daystmp)
     // получаем все заказы из vuex
     const days = store.getters['days/days']
-    return {days, masters, today, admins, newday}
+    return {days, masters, couriers, today, admins, newday}
   },
   data() { 
     return {

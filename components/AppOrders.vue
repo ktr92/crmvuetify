@@ -28,7 +28,8 @@
                   <th rowspan="2">О заказе</th>
                   <th rowspan="2">О клиенте</th>
                   <th rowspan="2">ЧС</th>
-                  <th rowspan="2">Точка</th>
+                  <th rowspan="2">Курьер</th>
+                  <th rowspan="2">Оплата</th>
                 </tr>
                 <!-- <tr>
                   <th v-for="label in orderlabels" :key="label">
@@ -86,7 +87,8 @@
                 <td class="td--comment">{{ props.item.commentOrder }}</td> 
                 <td class="td--comment">{{ props.item.commentClient }}</td> 
                 <td>{{ props.item.blacklist }}</td> 
-                <td>{{ props.item.location }}</td> 
+                <td>{{ props.item.courier }}</td> 
+                <td>{{ props.item.courierSumm }}</td> 
               
               </tr>
             </template>

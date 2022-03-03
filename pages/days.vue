@@ -43,11 +43,48 @@
     </v-form>
     <div>
       <div >
-          <app-stats :orders="days" :header="headers" :isfound="0" v-if="checkinfo"></app-stats>
-          <app-adminstats :orders="days" :isfound="0" v-show="checkinfo"></app-adminstats>
-          <app-masterstats :orders="days" :isfound="0" v-show="checkinfo"></app-masterstats>
-          <app-suborders :orders="days" :show="checkinfo" :isfound="0" v-if="dayslength"></app-suborders>          
-          <div v-else>Данных за этот день не найдено</div>
+        <v-card>
+            <v-tabs
+              v-model="tab"
+              align-with-title
+            >
+              <v-tab
+                v-for="tab in tabs"
+                :key="tab"
+              >
+                {{ tab }}
+              </v-tab>
+            </v-tabs>
+        <v-tabs-items v-model="tab">
+          <v-tab-item>
+            <v-card flat>
+             <!--  <app-stats :orders="days" :header="headers" :isfound="0" v-if="checkinfo"></app-stats> -->
+              <app-suborders :orders="days" :show="checkinfo" :isfound="0" v-if="dayslength"></app-suborders>          
+              <div v-else>Данных за этот день не найдено</div>
+            </v-card>
+          </v-tab-item>
+          <v-tab-item>
+            <v-card flat>
+              <app-adminstats :orders="days" :isfound="0" v-show="checkinfo"></app-adminstats>
+            </v-card>
+          </v-tab-item>
+          <v-tab-item>
+            <v-card flat>             
+              <app-masterstats :orders="days" :isfound="0" v-show="checkinfo"></app-masterstats>
+            </v-card>
+          </v-tab-item>
+          <v-tab-item>
+            <v-card flat>             
+              <app-courierstats :orders="days" :isfound="0" v-show="checkinfo"></app-courierstats>
+            </v-card>
+          </v-tab-item>
+        </v-tabs-items>
+
+
+        </v-card>
+          
+         
+         
         </div>       
      </div> 
 </div>
@@ -67,6 +104,7 @@ export default {
   },
   data() {
     return {
+
       date: dateutils.getCurrentDateSplit(),
       dates: [
         dateutils.getCurrentDateSplit(), 
@@ -76,6 +114,11 @@ export default {
       maxDate: '',
       valid: false,   
       menu2: false, 
+      headers: [],
+      tab: null,
+      tabs: [
+        'Клиенты', 'Админы', 'Мастера', 'Курьеры'
+      ]
     }
   },
   computed: {

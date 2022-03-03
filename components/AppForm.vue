@@ -195,11 +195,19 @@
               </td>
               <td>
                 <v-select
-                  :items="locations"
-                  label="Точка"
-                  v-model="location"
-                  item-value="first"
+                  :items="couriers"
+                  label="Курьер"
+                  v-model="courier"
+                  
+                  item-text="name"
                 ></v-select>
+              </td>
+              <td>
+                <v-text-field
+                  v-model.number="courierSumm"
+                  label="Оплата"
+                  type="number" min="0"
+                ></v-text-field>
               </td>
             </tr>
           </tbody>
@@ -233,7 +241,7 @@ export default {
    
   },
   components: {AppOrders},
-  props: ['masters'],
+  props: ['masters', 'couriers'],
   data() {
     return {
       info: [],
@@ -259,9 +267,11 @@ export default {
       commentOrder: '',
       commentClient: '',
       master: '',
-      locations: ['Курская', 'Парк'],
+      courier: '',
+      courierSumm: '',
+    /*   locations: ['Курская', 'Парк'], */
       blacklists: ['', 'Да'],
-      location: 'Курская',
+     /*  location: 'Курская', */
       blacklist: '',
       nameRules: [
         v => !!v || 'Обязательное поле'       
@@ -325,7 +335,7 @@ export default {
       this.info = []
     },
     async onSubmit() {
-       this.$nuxt.$loading.start()
+      
       try {
         const formData = {
          /*  date: this.$store.getters.day, */
@@ -352,9 +362,11 @@ export default {
           total: this.total || 0,
           commentOrder: this.commentOrder || '',
           commentClient: this.commentClient || '',
-          location: this.location,
+         /*  location: this.location, */
           master: this.master,
+          courier: this.courier,
           blacklist: this.blacklist,
+          courierSumm: this.courierSumm || 0
         }
       await this.$store.dispatch('days/addRow', formData)
       this.$store.dispatch('days/addDay', formData)
@@ -372,7 +384,7 @@ export default {
           duration: 4000,         
         })
       }
-      this.$nuxt.$loading.finish()
+      
     }
   }
 }

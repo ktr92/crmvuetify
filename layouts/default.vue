@@ -68,6 +68,11 @@ export default {
           title: 'Мастера',
           to: '/masters'
         },
+        {
+          icon: 'mdi-truck-fast',
+          title: 'Курьеры',
+          to: '/couriers'
+        },
 
       ],
       miniVariant: true,

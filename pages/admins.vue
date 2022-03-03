@@ -60,7 +60,7 @@ export default {
           type: 'success',
           duration: 4000,         
         })
-        this.name = ' '
+        this.name = ''
         
       } catch (error) {
         if (this.$store.getters.error.status === 409) {

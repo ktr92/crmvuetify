@@ -91,21 +91,100 @@
                 <td>{{ props.item.courierSumm }}</td> 
               
               </tr>
+
+              <tr v-if="editable">
+                <td colspan="100%">
+                  <v-btn
+                    color="primary"
+                    dark
+                    @click.stop="showedit(props.item._id)"
+                  >
+                    Редактировать
+                  </v-btn>
+                </td>
+              </tr>
             </template>
           </v-data-table>
          </div>
+
+        <div v-if="editable">
+          <v-dialog
+            v-model="dialog"
+            
+            max-width="1920px"
+          >
+            <v-card>
+              <v-card-title>
+                <span class="text-h5">User Profile</span>
+              </v-card-title>
+              <v-card-text>
+                <app-edit :order="editing" :masters="masters" :couriers="couriers" @edited="edited"></app-edit>
+              </v-card-text>
+              
+            </v-card>
+          </v-dialog>
+        </div>
      
   </div>
 </template>
 
 <script>
 export default {
-  props: ['orders', 'show', 'isfound'],
+  props: {
+    orders: {
+      required: false
+    },
+    show: {
+      required: false,
+      default: true
+    },
+    isfound: {
+      required: false,
+      default: false
+    },
+    editable: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
   data() {
     return {
-      headers: []
+      headers: [],
+      toedit: '',
+      dialog: false,
+      masters: [],
+      couriers: []
+    }
+  }, 
+  methods: {
+    async showedit(id) {
+      this.toedit = id; 
+      this.dialog = true;      
+      this.masters = await this.$store.dispatch('masters/fetchMasters')
+      this.couriers = await this.$store.dispatch('couriers/fetchCouriers')
+    },
+    edited() {
+      this.dialog = false
+      this.toedit = null
     }
   },  
+  beforeMount() {
+    this.$nextTick(() => {
+      this.$nuxt.$loading.start()
+    })
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.$nuxt.$loading.finish()
+    })
+  },
+ 
+  computed: {
+    editing() {
+      return this.$store.getters['days/daybyid'](this.toedit)
+    }
+  }
 }
 </script>
 

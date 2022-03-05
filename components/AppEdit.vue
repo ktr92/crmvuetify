@@ -10,24 +10,23 @@
             <tr>
               <td>
                 <v-text-field
-                  v-model="from"
+                  v-model="edit.from"
                   label="Откуда"
                 ></v-text-field>
               </td>
               <td>
                 <v-text-field
-                  v-model="phone"
+                  v-model="edit.phone"
                   v-mask="'8##########'"
                   class="input-phone requiredfield"
                   label="Телефон"
                   :rules="phoneRules"
                   required
-                  @change="clientInfo"
                 ></v-text-field>
               </td>
               <td>
                  <v-text-field
-                    v-model="name"
+                    v-model="edit.name"
                     :rules="nameRules"
                     label="Имя"
                     class="requiredfield"
@@ -36,7 +35,7 @@
               </td>
               <td>
                 <v-text-field
-                  v-model.number="n100"
+                  v-model.number="edit.n100"
                   label="100"
                   type="number" min="0"
                   class="input-count"
@@ -44,7 +43,7 @@
               </td>
               <td>
                 <v-text-field
-                  v-model.number="n150"
+                  v-model.number="edit.n150"
                   label="150"
                   type="number" min="0"
                   class="input-count"
@@ -52,7 +51,7 @@
               </td>
               <td>
                 <v-text-field
-                  v-model.number="n200"
+                  v-model.number="edit.n200"
                   label="200"
                   type="number" min="0"
                   class="input-count"
@@ -60,7 +59,7 @@
               </td>
               <td>
                 <v-text-field
-                  v-model.number="n250"
+                  v-model.number="edit.n250"
                   label="250"
                   type="number" min="0"
                   class="input-count"
@@ -68,7 +67,7 @@
               </td>
               <td>
                 <v-text-field
-                  v-model.number="n300"
+                  v-model.number="edit.n300"
                   label="300"
                   type="number" min="0"
                   class="input-count"
@@ -76,7 +75,7 @@
               </td>
               <td>
                 <v-text-field
-                  v-model.number="n350"
+                  v-model.number="edit.n350"
                   label="350"
                   type="number" min="0"
                   class="input-count"
@@ -84,7 +83,7 @@
               </td>
               <td>
                 <v-text-field
-                  v-model.number="n400"
+                  v-model.number="edit.n400"
                   label="400"
                   type="number" min="0"
                   class="input-count"
@@ -92,7 +91,7 @@
               </td>
               <td>
                 <v-text-field
-                  v-model.number="n450"
+                  v-model.number="edit.n450"
                   label="450"
                   type="number" min="0"
                   class="input-count"
@@ -100,7 +99,7 @@
               </td>
               <td>
                 <v-text-field
-                  v-model.number="n500"
+                  v-model.number="edit.n500"
                   label="500"
                   type="number" min="0"
                   class="input-count"
@@ -108,7 +107,7 @@
               </td>
               <td>
                 <v-text-field
-                  v-model.number="n550"
+                  v-model.number="edit.n550"
                   label="550"
                   type="number" min="0"
                   class="input-count"
@@ -116,7 +115,7 @@
               </td>
               <td>
                 <v-text-field
-                  v-model.number="n600"
+                  v-model.number="edit.n600"
                   label="600"
                   type="number" min="0"
                   class="input-count"
@@ -134,7 +133,7 @@
               </td>
               <td>
                 <v-text-field
-                  v-model.number="percent1"
+                  v-model.number="edit.percent1"
                   label="Скидка 1"
                   min="0"
                 ></v-text-field>
@@ -144,7 +143,7 @@
                   class="requiredfield"
                   :items="masters"
                   :rules="selectRules"
-                  v-model="master"
+                  v-model="edit.master"
                   required
                   label="Мастер"
                   item-text="name"
@@ -153,7 +152,7 @@
               </td>
               <td>
                 <v-text-field
-                  v-model.number="sale"
+                  v-model.number="edit.sale"
                   min="0"
                   label="Продажа"
                   type="number"
@@ -161,7 +160,7 @@
               </td>
               <td>
                 <v-text-field
-                  v-model.number="percent2"
+                  v-model.number="edit.percent2"
                   min="0"
                   label="Скидка 2"
                 ></v-text-field>
@@ -178,14 +177,14 @@
               <td>
                 <v-textarea
                 rows="1"
-                v-model="commentOrder"
+                v-model="edit.commentOrder"
                 label="О заказе"
               ></v-textarea>
               </td>
               <td>
                 <v-textarea
                 rows="1"
-                v-model="commentClient"
+                v-model="edit.commentClient"
                 label="О клиенте"
               ></v-textarea>
               </td>
@@ -193,7 +192,7 @@
                 <v-select
                   :items="blacklists"
                   label="ЧС"
-                  v-model="blacklist"
+                  v-model="edit.blacklist"
                   item-value="first"
                 ></v-select>
               </td>
@@ -201,14 +200,14 @@
                 <v-select
                   :items="couriers"
                   label="Курьер"
-                  v-model="courier"
+                  v-model="edit.courier"
                   
                   item-text="name"
                 ></v-select>
               </td>
               <td>
                 <v-text-field
-                  v-model.number="courierSumm"
+                  v-model.number="edit.courierSumm"
                   label="Оплата"
                   type="number" min="0"
                 ></v-text-field>
@@ -223,56 +222,49 @@
         type="submit"
         :disabled="!valid"
       >
-        Добавить
+        Сохранить
       </v-btn>
-      <v-btn
-        class="error" 
-        @click="clear">
-        Очистить 
-      </v-btn>
+      
      </v-form>
-     <app-orders :orders="info" :show="checkinfo" :isfound="1"></app-orders>
      <br>
   </div>
 </template>
 
 <script>
-import AppOrders from '@/components/AppOrders'
 import dateutils from '@/utils/date.utils'
 
 export default {
-  async asynData() {
-   
-  },
-  components: {AppOrders},
-  props: ['masters', 'couriers'],
+  props: ['masters', 'couriers', 'order'],
+  name: "AppEdit",
   data() {
     return {
-      info: [],
+      edit: {
+        name: '',
+        phone: '',
+        from: '',
+        n100: '',
+        n150: '',
+        n200: '',
+        n250: '',
+        n300: '',
+        n350: '',
+        n400: '',
+        n450: '',
+        n500: '',
+        n550: '',
+        n600: '',
+        percent1: '',
+        sale: '',
+        percent2: '',
+        commentOrder: '',
+        commentClient: '',
+        master: '',
+        courier: '',
+        courierSumm: '',
+      },
       headers: [],
       valid: false,
-      name: '',
-      phone: '',
-      from: '',
-      n100: '',
-      n150: '',
-      n200: '',
-      n250: '',
-      n300: '',
-      n350: '',
-      n400: '',
-      n450: '',
-      n500: '',
-      n550: '',
-      n600: '',
-      percent1: '',
-      sale: '',
-      percent2: '',
-      commentOrder: '',
-      commentClient: '',
-      master: '',
-      courier: '',
-      courierSumm: '',
+     
     /*   locations: ['Курская', 'Парк'], */
       blacklists: ['', 'Да'],
      /*  location: 'Курская', */
@@ -289,10 +281,13 @@ export default {
      
     }
   },
+  mounted() {
+    this.edit = {...this.order[0]}
+  },
   computed: {
     summ: {
       get() {
-        return this.n100*100 + this.n150*150 + this.n200*200 + this.n250*250 + this.n300*300 + this.n350*350 + this.n400*400 + this.n450*450 + this.n500*500 + this.n550*550 + this.n600*600 
+        return this.edit.n100*100 + this.edit.n150*150 + this.edit.n200*200 + this.edit.n250*250 + this.edit.n300*300 + this.edit.n350*350 + this.edit.n400*400 + this.edit.n450*450 + this.edit.n500*500 + this.edit.n550*550 + this.edit.n600*600 
       },
       set(val) {
         this.value = val
@@ -300,7 +295,7 @@ export default {
     },
      total:  {
       get() {
-        return this.summ + this.sale - this.percent1 - this.percent2
+        return this.summ + this.edit.sale - this.edit.percent1 - this.edit.percent2
       },
       set(val) {
         this.value = val
@@ -309,7 +304,7 @@ export default {
      phonecheck:
      {
        get() {
-        return this.phone.length || 0
+        return this.edit.phone.length || 0
        },
        set(val) {
         this.value = val
@@ -317,7 +312,7 @@ export default {
      },
      checkinfo: {
        get() {
-        return this.info.length || 0
+        return this.edit.info.length || 0
        },
        set(val) {
         this.value = val
@@ -325,69 +320,54 @@ export default {
      }   
   },
   methods: {
-    async clientInfo() {
-      try {
-        if (this.phonecheck === 11) {
-          this.info = await this.$store.dispatch('days/clientinfo', Number(this.phone))
-        } 
-        else {
-          this.info = []
-        }
-      } catch (error) {
-        throw(error)
-      }
-    },
     clear() {
-      this.$refs.form.reset()
-      this.info = []
+      this.$refs.form.reset()    
     },
     async onSubmit() {
       
       try {
         const formData = {
          /*  date: this.$store.getters.day, */
+          _id: this.edit._id,
           date: dateutils.getCurrentDate().slice(0, 10),
           admin: this.$store.getters.admin,
-          name: this.name,
-          phone: Number(this.phone),
-          from: this.from || '',
-          n100: this.n100 || 0,
-          n150: this.n150 || 0,
-          n200: this.n200 || 0,
-          n250: this.n250 || 0,
-          n300: this.n300 || 0,
-          n350: this.n350 || 0,
-          n400: this.n400 || 0,
-          n450: this.n450 || 0,
-          n500: this.n500 || 0,
-          n550: this.n550 || 0,
-          n600: this.n600 || 0,
-          percent1: this.percent1 || 0,
+          name: this.edit.name,
+          phone: Number(this.edit.phone),
+          from: this.edit.from || '',
+          n100: this.edit.n100 || 0,
+          n150: this.edit.n150 || 0,
+          n200: this.edit.n200 || 0,
+          n250: this.edit.n250 || 0,
+          n300: this.edit.n300 || 0,
+          n350: this.edit.n350 || 0,
+          n400: this.edit.n400 || 0,
+          n450: this.edit.n450 || 0,
+          n500: this.edit.n500 || 0,
+          n550: this.edit.n550 || 0,
+          n600: this.edit.n600 || 0,
+          percent1: this.edit.percent1 || 0,
           summ: this.summ || 0,
-          sale: this.sale || 0,
-          percent2: this.percent2 || 0,
+          sale: this.edit.sale || 0,
+          percent2: this.edit.percent2 || 0,
           total: this.total || 0,
-          commentOrder: this.commentOrder || '',
-          commentClient: this.commentClient || '',
+          commentOrder: this.edit.commentOrder || '',
+          commentClient: this.edit.commentClient || '',
          /*  location: this.location, */
-          master: this.master,
-          courier: this.courier || '',
-          blacklist: this.blacklist,
-          courierSumm: this.courierSumm || 0
+          master: this.edit.master,
+          courier: this.edit.courier || '',
+          blacklist: this.edit.blacklist,
+          courierSumm: this.edit.courierSumm || 0
         }
-      await this.$store.dispatch('days/addRow', formData)
-      this.$store.dispatch('days/addDay', formData)
-      this.$refs.form.reset()
-      this.phone = ''
-      this.master = ''
-      this.courier = ''
-      this.info = []
+      await this.$store.dispatch('days/updateRow', formData)
+      this.$store.dispatch('days/updateDay', formData)
+      this.$emit('edited', false)
       this.$notify({         
-          title: 'Готово!',
+          title: 'Изменено!',
           type: 'success',
           duration: 4000,         
         })
       } catch (error) {
+        console.log(error)
           this.$notify({         
           title: 'Произошла ошибка.',
           type: 'error',

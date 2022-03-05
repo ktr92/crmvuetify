@@ -56,6 +56,15 @@ module.exports.addRow = async (req, res) => {
     res.status(500).json(error)
   }
 }
+module.exports.updateRow = async (req, res) => {
+  try {
+    console.log(req.body._id)
+    const days = await Days.findOneAndUpdate({_id: req.body._id}, {...req.body}, {new: true})
+    res.status(200).json(days)
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}
 module.exports.checkDay = async (req, res) => {
   try {
    

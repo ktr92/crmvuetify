@@ -6,7 +6,7 @@
     <div v-else>
       <app-form :masters="masters" :couriers="couriers"></app-form>
       <div>
-        <app-orders :orders="days" :show="checkdays" :isfound="0" v-if="checkdays"></app-orders>
+        <app-orders :orders="days" :show="checkdays" :isfound="0" v-if="checkdays" :editable="true"></app-orders>
         <div v-else>Клиентов пока не было</div>
       </div>
     </div>
@@ -48,8 +48,8 @@ export default {
     // сохраняем все полученные заказы во vuex 
     await store.dispatch('days/setDays', daystmp)
     // получаем все заказы из vuex
-    const days = store.getters['days/days']
-    return {days, masters, couriers, today, admins, newday}
+/*     const days = store.getters['days/days'] */
+    return {masters, couriers, today, admins, newday}
   },
   data() { 
     return {
@@ -63,6 +63,9 @@ export default {
     },
     checkdays: function() {
       return this.days.length
+    },
+    days: function() {
+      return this.$store.getters['days/days']
     }
   }
  

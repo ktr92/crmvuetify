@@ -56,6 +56,9 @@
                 {{ tab }}
               </v-tab>
             </v-tabs>
+            <keep-alive>
+
+              
         <v-tabs-items v-model="tab">
           <v-tab-item>
             <v-card flat>
@@ -80,11 +83,10 @@
             </v-card>
           </v-tab-item>
         </v-tabs-items>
+            </keep-alive>
 
 
         </v-card>
-          
-         
          
         </div>       
      </div> 
@@ -192,4 +194,14 @@ td, th {
   .statstable  {
     margin-bottom: 30px;
   }
+  .v-window-item {
+    display: block !important;
+    opacity: 0;
+    height: 0;
+}
+  .v-window-item.v-window-item--active {
+    opacity: 1;
+    height: initial;
+}
+
 </style>

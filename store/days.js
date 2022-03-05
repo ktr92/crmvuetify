@@ -9,6 +9,10 @@ export const mutations = {
   },
   addDay(state, payload) {
     state.days.push(payload)
+  },
+  updateDay(state, payload) {
+    Object.assign(state.days.filter(item => item._id == payload._id)[0], payload)
+
   }
 }
 
@@ -18,6 +22,9 @@ export const actions = {
   },
   addDay(context, day) {
     context.commit('addDay', day)
+  },
+  updateDay(context, day) {
+    context.commit('updateDay', day)
   },
   async fetch({ commit }) {
     try {
@@ -63,6 +70,18 @@ export const actions = {
       throw error
     }
   },
+  async updateRow({ commit }, data) {
+    try {
+      const req = await this.$axios.$put('/api/days/updateRow', data).then(res => {  
+        return req
+      }).catch(err => {
+        commit('setError', err.response, {root: true})
+        throw err
+      })
+    } catch (error) {
+      throw error
+    }
+  },
   async clientinfo({commit}, phone) {
     try {
       return await this.$axios.$get(`/api/days/clientinfo/${phone}`)
@@ -73,5 +92,6 @@ export const actions = {
 }
 
 export const getters = {
-  days: state => state.days
+  days: state => state.days,
+  daybyid: (state) => (id) => state.days.filter(item => item._id == id)
 }

@@ -55,7 +55,7 @@ export default {
         },
         {
           icon: 'mdi-chart-bubble',
-          title: 'Другой день',
+          title: 'Статистика',
           to: '/days'
         },
         {

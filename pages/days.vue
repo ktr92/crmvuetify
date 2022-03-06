@@ -42,7 +42,8 @@
       </v-btn>     
     </v-form>
     <br/>
-    <div>
+    <app-loading :inblock="true" v-if="loading"></app-loading>
+    <div v-else>
       <div >
         <v-card>
             <v-tabs
@@ -59,12 +60,12 @@
             <keep-alive>
 
               
-        <v-tabs-items v-model="tab">
+        <v-tabs-items v-model="tab"  v-if="dayslength">
           <v-tab-item>
             <v-card flat>
              <!--  <app-stats :orders="days" :header="headers" :isfound="0" v-if="checkinfo"></app-stats> -->
-              <app-suborders :orders="days" :show="checkinfo" :isfound="0" v-if="dayslength"></app-suborders>          
-              <div v-else>Данных за этот день не найдено</div>
+              <app-suborders :orders="days" :show="checkinfo" :isfound="0"></app-suborders>          
+             
             </v-card>
           </v-tab-item>
           <v-tab-item>
@@ -83,6 +84,15 @@
             </v-card>
           </v-tab-item>
         </v-tabs-items>
+         <div v-else>
+          <v-alert
+              border="top"
+              color="red lighten-2"
+              dark
+            >
+              Нет данных за выбранный период
+            </v-alert>
+          </div>
             </keep-alive>
 
 
@@ -95,11 +105,11 @@
 
 <script>
 import AppTable from '~/components/AppTable.vue'
+import AppLoading from '~/components/AppLoading.vue'
 import dateutils from '@/utils/date.utils'
-import AppLoader from '@/components/AppLoader.vue'
 
 export default {
-  components: { AppTable, AppLoader },
+  components: { AppTable, AppLoading },
   async asyncData({store}) {
     let datestr = dateutils.getCurrentDate()
     const days = await store.dispatch('days/fetchDay', dateutils.formatIso(datestr).slice(0,10))
@@ -119,6 +129,7 @@ export default {
       menu2: false, 
       headers: [],
       tab: null,
+      loading: true,
       tabs: [
         'Клиенты', 'Админы', 'Мастера', 'Курьеры'
       ]
@@ -142,17 +153,21 @@ export default {
   },
   methods: {
      async onSubmit() {
-       this.$nuxt.$loading.start()
+        this.loading = true
+       
         const formData = {        
           dates: this.dates.sort((a, b) => new Date(a) - new Date(b))
         }
-      try {
+        try {
         this.days = await this.$store.dispatch('days/fetchDay', formData.dates)
-      } catch (error) {
-        throw error
-      }
-      this.$nuxt.$loading.finish()
+        } catch (error) {
+          throw error
+        }
+        this.loading = false
     }
+  },
+  mounted() {
+    this.loading = false
   }
 }
 </script>
@@ -202,6 +217,11 @@ td, th {
   .v-window-item.v-window-item--active {
     opacity: 1;
     height: initial;
+}
+
+
+.v-tabs {
+  margin-bottom: 10px;
 }
 
 </style>

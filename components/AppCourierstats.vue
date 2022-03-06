@@ -18,7 +18,7 @@
               {{ courier.length }}
             </td>
             <td>
-              {{ _.sumBy(courier, 'courierSumm') | price('price') }}
+              {{ (_.sumBy(courier, 'courierSumm') || 0) | price('price') }}
             </td>
           </tr>
         </tbody>

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loading" class="loading-page"  :class="{inblock: inblock}">
+  <div class="loading-page"  :class="{inblock: inblock}">
     <div class="loading"></div>
   </div>
 </template>
@@ -13,16 +13,8 @@
       }
     },
     data: () => ({
-      loading: false,
-    }),
-    methods: {
-      start() {
-        this.loading = true
-      },
-      finish() {
-        this.loading = false
-      },
-    },
+      
+    })
   }
 </script>
 <style scoped>
@@ -54,7 +46,10 @@
     border-top-color: #158876;
     animation: spin 1s ease-in-out infinite;
   }
-  
+  .loading-page.inblock {
+    position: relative;
+    min-height: 200px;
+  }
   @keyframes spin {
     to {
       -webkit-transform: rotate(360deg);

@@ -375,13 +375,14 @@ export default {
           blacklist: this.blacklist,
           courierSumm: this.courierSumm || 0
         }
-      await this.$store.dispatch('days/addRow', formData)
+      await this.$store.dispatch('days/addRow', formData)      
       this.$store.dispatch('days/addDay', formData)
       this.$refs.form.reset()
       this.phone = ''
       this.master = ''
       this.courier = ''
       this.info = []
+      await this.$emit('refresh')
       this.$notify({         
           title: 'Готово!',
           type: 'success',

@@ -9,6 +9,7 @@ module.exports.getAll = async (req, res) => {
     res.status(500).json(error)
   } 
 }
+
 module.exports.getOne = async (req, res) => {
   try {
    /*  const date = req.params.id.slice(0,10) */

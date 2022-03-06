@@ -238,53 +238,43 @@ export default {
   name: "AppEdit",
   data() {
     return {
-      edit: {
-        name: '',
-        phone: '',
-        from: '',
-        n100: '',
-        n150: '',
-        n200: '',
-        n250: '',
-        n300: '',
-        n350: '',
-        n400: '',
-        n450: '',
-        n500: '',
-        n550: '',
-        n600: '',
-        percent1: '',
-        sale: '',
-        percent2: '',
-        commentOrder: '',
-        commentClient: '',
-        master: '',
-        courier: '',
-        courierSumm: '',
-      },
-      headers: [],
-      valid: false,
-     
-    /*   locations: ['Курская', 'Парк'], */
-      blacklists: ['', 'Да'],
-     /*  location: 'Курская', */
-      blacklist: '',
-      nameRules: [
-        v => !!v || 'Обязательное поле'       
-      ],
-      phoneRules: [
-        v => v.length === 11 || 'Некорректный номер'
-      ],
-      selectRules: [
-        v => v.length > 1 || 'Не выбран'
-      ]
-     
+      edit: {},
+        headers: [],
+        valid: false,
+      
+      /*   locations: ['Курская', 'Парк'], */
+        blacklists: ['', 'Да'],
+      /*  location: 'Курская', */
+        blacklist: '',
+        nameRules: [
+          v => !!v || 'Обязательное поле'       
+        ],
+        phoneRules: [
+          v => !!v && v.length === 11 || 'Некорректный номер'
+        ],
+        selectRules: [
+          v => !!v && v.length > 1 || 'Не выбран'
+        ]
     }
   },
   mounted() {
-    this.edit = {...this.order[0]}
+    this.edit = {...this.obj}
   },
+  watch: {
+    obj: function() {
+      this.edit = {...this.obj}
+      this.edit.phone = this.edit.phone.toString()
+    }
+  }, 
   computed: {
+    obj: {
+      get() {   
+        return {...this.$store.getters['days/daybyid'](this.order)[0]}
+      },
+      set(val) {
+        this.value = val
+      }      
+    },    
     summ: {
       get() {
         return this.edit.n100*100 + this.edit.n150*150 + this.edit.n200*200 + this.edit.n250*250 + this.edit.n300*300 + this.edit.n350*350 + this.edit.n400*400 + this.edit.n450*450 + this.edit.n500*500 + this.edit.n550*550 + this.edit.n600*600 
@@ -301,30 +291,10 @@ export default {
         this.value = val
       }   
      },
-     phonecheck:
-     {
-       get() {
-        return this.edit.phone.length || 0
-       },
-       set(val) {
-        this.value = val
-      }   
-     },
-     checkinfo: {
-       get() {
-        return this.edit.info.length || 0
-       },
-       set(val) {
-        this.value = val
-       } 
-     }   
+       
   },
   methods: {
-    clear() {
-      this.$refs.form.reset()    
-    },
     async onSubmit() {
-      
       try {
         const formData = {
          /*  date: this.$store.getters.day, */
@@ -361,6 +331,7 @@ export default {
       await this.$store.dispatch('days/updateRow', formData)
       this.$store.dispatch('days/updateDay', formData)
       this.$emit('edited', false)
+ 
       this.$notify({         
           title: 'Изменено!',
           type: 'success',

@@ -1,13 +1,16 @@
 <template>
   <div>
     <div>
+      
       <v-data-table
             :headers="headers"
             :items="orders"
             :items-per-page="-1"
             class="elevation-1"
             :class="{tablesuccess: isfound}"
-            v-if="show"
+            v-show="show"
+            :loading="loadTable"
+            loading-text="Загрузка..."
           >
           <template v-slot:header="" >
               <thead>
@@ -30,6 +33,7 @@
                   <th rowspan="2">ЧС</th>
                   <th rowspan="2">Курьер</th>
                   <th rowspan="2">Оплата</th>
+                  <th rowspan="2" v-if="editable">Изменить</th>
                 </tr>
                 <!-- <tr>
                   <th v-for="label in orderlabels" :key="label">
@@ -89,23 +93,17 @@
                 <td>{{ props.item.blacklist }}</td> 
                 <td>{{ props.item.courier }}</td> 
                 <td>{{ props.item.courierSumm }}</td> 
-              
-              </tr>
-
-              <tr v-if="editable">
-                <td colspan="100%">
-                  <v-btn
-                    color="primary"
-                    dark
-                    @click.stop="showedit(props.item._id)"
-                  >
-                    Редактировать
-                  </v-btn>
+                <td v-if="editable" colspan="100%" class="center button">
+                  <span @click.stop="showedit(props.item._id)">
+                    <v-icon center color="#1976d2" >mdi-pencil-box-multiple</v-icon>
+                  </span>
                 </td>
               </tr>
+
+              
             </template>
           </v-data-table>
-         </div>
+          </div>
 
         <div v-if="editable">
           <v-dialog
@@ -115,10 +113,10 @@
           >
             <v-card>
               <v-card-title>
-                <span class="text-h5">User Profile</span>
+                <span class="text-h5">Редактрование данных</span>
               </v-card-title>
               <v-card-text>
-                <app-edit :order="editing" :masters="masters" :couriers="couriers" @edited="edited"></app-edit>
+                <app-edit :order="editing" :masters="masters" :couriers="couriers" @edited="edited" v-if="dialog"></app-edit>
               </v-card-text>
               
             </v-card>
@@ -154,7 +152,8 @@ export default {
       toedit: '',
       dialog: false,
       masters: [],
-      couriers: []
+      couriers: [],
+      loadTable: true
     }
   }, 
   methods: {
@@ -169,20 +168,19 @@ export default {
       this.toedit = null
     }
   },  
+  watch: {
+    
+  },
   beforeMount() {
-    this.$nextTick(() => {
-      this.$nuxt.$loading.start()
-    })
+    
   },
   mounted() {
-    this.$nextTick(() => {
-      this.$nuxt.$loading.finish()
-    })
+    this.loadTable = false;
   },
  
   computed: {
     editing() {
-      return this.$store.getters['days/daybyid'](this.toedit)
+      return this.toedit
     }
   }
 }
@@ -191,6 +189,9 @@ export default {
 <style scoped>
 td {
   max-width: 120px;
+}
+table, tbody, tr {
+  width: 100% !important;
 }
   .theme--light.v-data-table.tablesuccess, .v-data-table.tablesuccess {
     background: #e9ffe5;
@@ -212,5 +213,11 @@ td {
   }
   .v-data-table__wrapper thead {
     background: aliceblue;
+  }
+  .center {
+    text-align: center;
+  }
+  .button i {
+   cursor: pointer;
   }
 </style>

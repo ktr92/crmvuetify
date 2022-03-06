@@ -4,10 +4,17 @@
        <app-dayinit :admins="admins" :day="today"></app-dayinit>
     </div>
     <div v-else>
-      <app-form :masters="masters" :couriers="couriers"></app-form>
+      <app-form :masters="masters" :couriers="couriers" @refresh="refresh"></app-form>
       <div>
         <app-orders :orders="days" :show="checkdays" :isfound="0" v-if="checkdays" :editable="true"></app-orders>
-        <div v-else>Клиентов пока не было</div>
+        <div v-else>
+          <v-alert
+              border="top"
+              color="red lighten-2"
+              dark
+            >Клиентов пока не было
+          </v-alert>
+          </div>
       </div>
     </div>
    
@@ -67,6 +74,16 @@ export default {
     days: function() {
       return this.$store.getters['days/days']
     }
+  },
+  methods: {
+    async refresh() {
+      
+      // получаем все заказы на сегодня
+      const daystmp = await this.$store.dispatch('days/fetchDay',  dateutils.formatIso(this.$store.getters.day.slice(0,10)) || dateutils.getCurrentDate().slice(0,10))   
+      // сохраняем все полученные заказы во vuex 
+      await this.$store.dispatch('days/setDays', daystmp)
+      
+    }
   }
  
 }
@@ -97,5 +114,16 @@ td, th {
   .v-data-footer {
     display: none !important;
   }
+  .theme--light.v-input--is-disabled input, .theme--light.v-input--is-disabled textarea {
+    color: rgba(0, 0, 0, 0.68);
+    font-weight: bold;
+}
+.theme--light.v-label--is-disabled {
+    color: rgba(0, 0, 0, 0.68);
+    font-weight: bold;
+}
+.v-alert {
+  margin: 0;
+}
 
 </style>

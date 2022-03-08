@@ -10,12 +10,11 @@
         </thead>
         <tbody>
           <tr>
-           <td>{{ values[0] }} </td>
-           <td>{{ values[1] | price('price')}} </td>
-           <td>{{ values[2] | price('price')}} </td>
-           <td>{{ values[3] | price('price')}} </td>
-           <td>{{ values[4] }} </td>
-           <td>{{ values[5] }} </td>
+           <td>{{ orders.daysStats.clients }} </td>
+           <td>{{ orders.daysStats.summ | price('price') }} </td>
+           <td>{{ orders.daysStats.sale | price('price') }} </td>
+           <td>{{ orders.daysStats.total | price('price') }} </td>
+           <td>{{ (orders.daysStats.couriers || 0) | price('price') }} </td>
           </tr>
         </tbody>
       </template>
@@ -34,31 +33,8 @@ export default {
         'Всего за заточку (руб)',
         'Всего за продажи (руб)',
         'Итого вал (руб)',
-        'Комментарии',
-        'ЧС'
+        'Всего ЗП курьеров',
         ],
-    }
-  },
-  computed: {
-    values() {
-      return [
-        this.orders.length,
-        this.orders.map(item => item.summ).reduce((str, currentValue) => str + currentValue),
-        this.orders.map(item => item.sale).reduce((str, currentValue) => str + currentValue),
-        this.orders.map(item => item.total).reduce((str, currentValue) => str + currentValue),
-        this.orders.map(item => item.commentClient).reduce((str, currentValue) => {
-          if (currentValue && currentValue.length > 1) {
-            return str + currentValue + ' / '
-          }
-          return str
-        }),
-        this.orders.map(item => item.blacklist).reduce((str, currentValue) => {
-          if (currentValue && currentValue.length > 1) {
-            return str + currentValue + ' / '
-          }
-          return str
-        })
-      ]
     }
   }
 }

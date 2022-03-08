@@ -389,6 +389,7 @@ export default {
           duration: 4000,         
         })
       } catch (error) {
+          console.error(error.message)
           this.$notify({         
           title: 'Произошла ошибка.',
           type: 'error',

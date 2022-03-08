@@ -12,7 +12,6 @@ export const mutations = {
   },
   updateDay(state, payload) {
     Object.assign(state.days.filter(item => item._id == payload._id)[0], payload)
-
   }
 }
 
@@ -42,6 +41,46 @@ export const actions = {
     }
 
   },
+  async fetchDayStat({ commit }, day) {
+    try {
+      return await this.$axios.$get(`/api/days/onestat/${day}`)
+    } catch (error) {
+      throw error
+    }
+
+  },
+  /* async fetchAdminStat({ commit }, day) {
+    try {
+      return await this.$axios.$get(`/api/days/adminstat/${day}`)
+    } catch (error) {
+      throw error
+    }
+
+  },
+  async fetchMasterStat({ commit }, day) {
+    try {
+      return await this.$axios.$get(`/api/days/masterstat/${day}`)
+    } catch (error) {
+      throw error
+    }
+
+  },
+  async fetchCourierStat({ commit }, day) {
+    try {
+      return await this.$axios.$get(`/api/days/courierstat/${day}`)
+    } catch (error) {
+      throw error
+    }
+
+  },
+  async fetchStat({ commit }, day) {
+    try {
+      return await this.$axios.$get(`/api/days/getstat/${day}`)
+    } catch (error) {
+      throw error
+    }
+
+  }, */
   async fetchDaysRange({ commit }, daysrange) {
     try {
       return await this.$axios.$get(`/api/days/range/${daysrange}`)

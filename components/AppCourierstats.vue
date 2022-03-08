@@ -9,16 +9,16 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(courier, idx) in couriersGroup" :key="idx">
+          <tr v-for="(courier, idx) in orders.courierStats" :key="idx">
             <td>
-              {{ courier[0].courier || '(без курьера)' }}
+              {{ courier.name || '(без курьера)' }}
             </td>
           
             <td>
-              {{ courier.length }}
+              {{ courier.clients }}
             </td>
             <td>
-              {{ (_.sumBy(courier, 'courierSumm') || 0) | price('price') }}
+              {{ (courier.summ || 0) | price('price')  }}
             </td>
           </tr>
         </tbody>
@@ -42,11 +42,11 @@ export default {
         ],
     }
   },
-  computed: {
+ /*  computed: {
     couriersGroup() {
       return _.groupBy(this.orders, order => order.courier)
     },
-  },  
+  },   */
 }
 </script>
 

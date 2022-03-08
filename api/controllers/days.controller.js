@@ -10,9 +10,27 @@ module.exports.getAll = async (req, res) => {
   } 
 }
 
+module.exports.getOneStat = async (req, res) => {
+  try {
+    const dates = req.params.id.split(',')
+    let result = {}
+    if (dates.length > 1) {
+      let dateStart = new Date(dates[0]).toISOString().slice(0,10)
+      let dateEnd = new Date(dates[1]).toISOString().slice(0,10)
+      result.days = await Days.find({date:{$gte:dateStart, $lte:dateEnd}})
+    }
+    else {
+      let dateStart = new Date(dates[0]).toISOString().slice(0,10)
+      result.days = await Days.find({date: dateStart})
+    }
+    
+    res.status(200).json(result)   
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}
 module.exports.getOne = async (req, res) => {
   try {
-   /*  const date = req.params.id.slice(0,10) */
     const dates = req.params.id.split(',')
     let days = []
     if (dates.length > 1) {
@@ -30,6 +48,90 @@ module.exports.getOne = async (req, res) => {
     res.status(500).json(error)
   }
 }
+/* module.exports.getStat = async (req, res) => {
+  try {
+    const _ = require("lodash");
+    const dates = req.params.id.split(',')
+    let result = {}
+    if (dates.length > 1) {
+      let dateStart = new Date(dates[0]).toISOString().slice(0,10)
+      let dateEnd = new Date(dates[1]).toISOString().slice(0,10)
+      result.days = await Days.find({date:{$gte:dateStart, $lte:dateEnd}})
+    }
+    else {
+      let dateStart = new Date(dates[0]).toISOString().slice(0,10)
+      result.days = await Days.find({date: dateStart})
+    }
+    res.status(200).json(result)   
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json(error)
+  }
+} */
+/* module.exports.getAdminStat = async (req, res) => {
+  try {
+    const dates = req.params.id.split(',')
+    let result = {}
+    if (dates.length > 1) {
+      let dateStart = new Date(dates[0]).toISOString().slice(0,10)
+      let dateEnd = new Date(dates[1]).toISOString().slice(0,10)
+      result.days = await Days.find({date:{$gte:dateStart, $lte:dateEnd}})
+    }
+    else {
+      let dateStart = new Date(dates[0]).toISOString().slice(0,10)
+      result.days = await Days.find({date: dateStart})
+    }
+    
+    res.status(200).json(result)   
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json(error)
+  }
+} */
+/* module.exports.getMasterStat = async (req, res) => {
+  try {
+    const dates = req.params.id.split(',')
+    let result = {}
+    if (dates.length > 1) {
+      let dateStart = new Date(dates[0]).toISOString().slice(0,10)
+      let dateEnd = new Date(dates[1]).toISOString().slice(0,10)
+      result.days = await Days.find({date:{$gte:dateStart, $lte:dateEnd}})
+    }
+    else {
+      let dateStart = new Date(dates[0]).toISOString().slice(0,10)
+      result.days = await Days.find({date: dateStart})
+    }
+    
+    
+    res.status(200).json(result)   
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json(error)
+  }
+} */
+
+/* module.exports.getCourierStat = async (req, res) => {
+  try {
+    const _ = require("lodash");
+    const dates = req.params.id.split(',')
+    let result = {}
+    if (dates.length > 1) {
+      let dateStart = new Date(dates[0]).toISOString().slice(0,10)
+      let dateEnd = new Date(dates[1]).toISOString().slice(0,10)
+      result.days = await Days.find({date:{$gte:dateStart, $lte:dateEnd}})
+    }
+    else {
+      let dateStart = new Date(dates[0]).toISOString().slice(0,10)
+      result.days = await Days.find({date: dateStart})
+    }
+    
+    
+    res.status(200).json(result)   
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json(error)
+  }
+} */
 module.exports.getRange = async (req, res) => {
   try {
     const date = req.params.id.slice(0,10)

@@ -61,26 +61,25 @@
 
               
         <v-tabs-items v-model="tab"  v-if="dayslength">
-          <v-tab-item>
+          <v-tab-item :eager="true">
             <v-card flat>
              <!--  <app-stats :orders="days" :header="headers" :isfound="0" v-if="checkinfo"></app-stats> -->
-              <app-suborders :orders="days" :show="checkinfo" :isfound="0"></app-suborders>          
-             
+              <app-suborders :orders="stat" :show="checkinfo" :isfound="0"></app-suborders>   
             </v-card>
           </v-tab-item>
-          <v-tab-item>
+          <v-tab-item :eager="true">
             <v-card flat>
-              <app-adminstats :orders="days" :isfound="0" v-show="checkinfo"></app-adminstats>
+              <app-adminstats :orders="adminstat" :isfound="0" v-show="checkinfo"></app-adminstats>
             </v-card>
           </v-tab-item>
-          <v-tab-item>
+          <v-tab-item :eager="true">
             <v-card flat>             
-              <app-masterstats :orders="days" :isfound="0" v-show="checkinfo"></app-masterstats>
+              <app-masterstats :orders="masterstat" :isfound="0" v-show="checkinfo"></app-masterstats>
             </v-card>
           </v-tab-item>
-          <v-tab-item>
+          <v-tab-item :eager="true">
             <v-card flat>             
-              <app-courierstats :orders="days" :isfound="0" v-show="checkinfo"></app-courierstats>
+              <app-courierstats :orders="courierstat" :isfound="0" v-show="checkinfo"></app-courierstats>
             </v-card>
           </v-tab-item>
         </v-tabs-items>
@@ -107,17 +106,25 @@
 import AppTable from '~/components/AppTable.vue'
 import AppLoading from '~/components/AppLoading.vue'
 import dateutils from '@/utils/date.utils'
+import statsutils from '@/utils/stats.utils'
 
 export default {
   components: { AppTable, AppLoading },
   async asyncData({store}) {
     let datestr = dateutils.getCurrentDate()
-    const days = await store.dispatch('days/fetchDay', dateutils.formatIso(datestr).slice(0,10))
-    return {days}
+    const days = await store.dispatch('days/fetchDayStat', dateutils.formatIso(datestr).slice(0,10))
+   /*  const adminstat = await store.dispatch('days/fetchAdminStat', dateutils.getCurrentDateSplit(datestr)) */
+    const adminstat = statsutils.setAdminStat(days)
+    /* const masterstat = await store.dispatch('days/fetchMasterStat', dateutils.getCurrentDateSplit(datestr)) */
+    const masterstat = statsutils.setMasterStat(days)
+    const stat = statsutils.setDaysStat(days)
+   /*  const stat = await store.dispatch('days/fetchStat', dateutils.getCurrentDateSplit(datestr)) */
+/*     const courierstat = await store.dispatch('days/fetchCourierStat', dateutils.getCurrentDateSplit(datestr))
+ */    const courierstat = statsutils.setCourierStat(days)
+    return {adminstat, masterstat, stat, courierstat}
   },
   data() {
     return {
-
       date: dateutils.getCurrentDateSplit(),
       dates: [
         dateutils.getCurrentDateSplit(), 
@@ -138,14 +145,14 @@ export default {
   computed: {
     checkinfo: {
        get() {
-        return this.days.length || 0
+        return this.stat.days.length || 0
        },
        set(val) {
         this.value = val
       }   
      },
     dayslength() {
-      return this.days.length
+      return this.stat.days.length
     },
     dateRangeText () {
       return this.dates
@@ -159,7 +166,11 @@ export default {
           dates: this.dates.sort((a, b) => new Date(a) - new Date(b))
         }
         try {
-        this.days = await this.$store.dispatch('days/fetchDay', formData.dates)
+          this.days = await this.$store.dispatch('days/fetchDayStat', formData.dates)
+          this.masterstat = statsutils.setMasterStat(this.days)
+          this.adminstat = statsutils.setAdminStat(this.days)
+          this.courierstat = statsutils.setCourierStat(this.days)
+          this.stat = statsutils.setDaysStat(this.days)
         } catch (error) {
           throw error
         }
@@ -218,6 +229,7 @@ td, th {
     opacity: 1;
     height: initial;
 }
+
 
 
 .v-tabs {

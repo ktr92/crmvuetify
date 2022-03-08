@@ -9,24 +9,24 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(admin, idx) in adminsGroup" :key="idx">
+          <tr v-for="(admin, idx) in orders.adminStats" :key="idx">
             <td>
-              {{ admin[0].admin }}
+              {{ admin.name }}
             </td>
             <td>
-              {{ Object.keys(_.groupBy(admin, item => item.date)).length }}
+              {{ admin.days }}
             </td>
             <td>
-              {{ admin.length }}
+              {{ admin.clients }}
             </td>
             <td>
-              {{ _.sumBy(admin, 'summ') | price('price') }}
+              {{ admin.summ | price('price')  }}
             </td>
             <td>
-              {{ _.sumBy(admin, 'sale') | price('price')}}
+              {{ admin.sale | price('price')  }}
             </td>
             <td>
-              {{ _.sumBy(admin, 'total') | price('price')}}
+              {{ admin.total | price('price')  }}
             </td>
             
           </tr>
@@ -55,11 +55,7 @@ export default {
         ],
     }
   },
-  computed: {
-    adminsGroup() {
-      return _.groupBy(this.orders, order => order.admin)
-    },
-  },  
+
 }
 </script>
 

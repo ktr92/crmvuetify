@@ -113,7 +113,7 @@ export default {
   },
   computed: {
     ordersGroup() {
-      return this.isfound ? this.orders : _.groupBy(this.orders, order => order.date)
+      return this.isfound ? this.orders.days : _.groupBy(this.orders.days, order => order.date)
     }
   }
 }

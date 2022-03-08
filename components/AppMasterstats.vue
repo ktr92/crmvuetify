@@ -9,36 +9,21 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(master, idx) in mastersGroup" :key="idx">
+          <tr v-for="(master, idx) in orders.masterStats" :key="idx">
             <td>
-              {{ master[0].master }}
+              {{ master.name }}
             </td>
             
             <td>
-              {{ master.length }}
+              {{ master.clients }}
             </td>
             
             <td>
-              {{ _.sum(
-                [
-                  _.sumBy(master, 'n100'),
-                  _.sumBy(master, 'n150'),
-                  _.sumBy(master, 'n200'),
-                  _.sumBy(master, 'n250'),
-                  _.sumBy(master, 'n300'),
-                  _.sumBy(master, 'n350'),
-                  _.sumBy(master, 'n400'),
-                  _.sumBy(master, 'n450'),
-                  _.sumBy(master, 'n500'),
-                  _.sumBy(master, 'n550'),
-                  _.sumBy(master, 'n600'),
-                  _.sumBy(master, 'n650')
-                ])              
-              }}
+              {{ master.count }}
             </td>
             
             <td>
-              {{ _.sumBy(master, 'summ') | price('price')}}
+              {{ master.summ | price('price')  }}
             </td>
             
           </tr>
@@ -64,11 +49,14 @@ export default {
         ],
     }
   },
-  computed: {
+  mounted() {
+    console.log(this.orders)
+  }
+/*   computed: {
     mastersGroup() {
       return _.groupBy(this.orders, order => order.master)
     }
-  }
+  } */
 }
 </script>
 

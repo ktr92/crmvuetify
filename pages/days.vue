@@ -111,8 +111,10 @@ import statsutils from '@/utils/stats.utils'
 export default {
   components: { AppTable, AppLoading },
   async asyncData({store}) {
-    let datestr = dateutils.getCurrentDate()
-    const days = await store.dispatch('days/fetchDayStat', dateutils.formatIso(datestr).slice(0,10))
+   /*  let datestr = dateutils.getCurrentDate() */
+    let datestr = '2020-02-02'
+ /*    const days = await store.dispatch('days/fetchDayStat', dateutils.formatIso(datestr).slice(0,10) ) */
+    const days = await store.dispatch('days/fetchDayStat', '2020-02-02')
    /*  const adminstat = await store.dispatch('days/fetchAdminStat', dateutils.getCurrentDateSplit(datestr)) */
     const adminstat = statsutils.setAdminStat(days)
     /* const masterstat = await store.dispatch('days/fetchMasterStat', dateutils.getCurrentDateSplit(datestr)) */

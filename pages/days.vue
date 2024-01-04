@@ -155,7 +155,7 @@ export default {
       return this.stat.days.length
     },
     dateRangeText () {
-      return this.dates
+      return/*  this.dates */ ['2020-02-01','2020-02-02']
     },
   },
   methods: {

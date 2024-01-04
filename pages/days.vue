@@ -127,8 +127,9 @@ export default {
     return {
       date: dateutils.getCurrentDateSplit(),
       dates: [
-        dateutils.getCurrentDateSplit(), 
-        dateutils.getCurrentDateSplit()
+        /* dateutils.getCurrentDateSplit(), 
+        dateutils.getCurrentDateSplit() */
+        '2020-02-01','2020-02-02'
         ],
       dateFormatted: dateutils.formatDate(dateutils.getCurrentDate()),
       maxDate: '',
@@ -155,7 +156,7 @@ export default {
       return this.stat.days.length
     },
     dateRangeText () {
-      return/*  this.dates */ ['2020-02-01','2020-02-02']
+      return this.dates
     },
   },
   methods: {
